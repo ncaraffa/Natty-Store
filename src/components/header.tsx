@@ -1,0 +1,4 @@
+"use client";
+import Link from "next/link"; import { useCart } from "./cart-provider";
+const links=[["Início","/"],["MM2","/mm2"],["FTF","/ftf"],["Adopt Me","/adopt-me"],["Encomendas","/encomendas"]];
+export function Header(){const {count}=useCart();const menu=<>{links.map(([n,h])=><Link key={h} href={h}>{n}</Link>)}</>;return <header className="header"><Link className="brand" href="/" aria-label="Natty Store — página inicial">Natty <span>Store</span></Link><nav className="desktop-nav" aria-label="Navegação principal">{menu}</nav><details className="mobile-menu"><summary aria-label="Abrir menu de navegação">Menu</summary><nav aria-label="Navegação mobile">{menu}</nav></details><div className="actions"><Link href="/conta">Minha conta</Link><Link className="pill" href="/carrinho" aria-label={`Carrinho com ${count} ${count===1?"item":"itens"}`}>Carrinho ({count})</Link></div></header>}

@@ -1,0 +1,14 @@
+node_modules
+.next
+.env*
+!.env.example
+*.tsbuildinfo
+.vercel
+
+# scratch / internal working files, not part of the shipped project
+STATE.md
+*-review.txt
+*-review.zip
+backup-before-*/
+natty-backups/
+serve-schema.js

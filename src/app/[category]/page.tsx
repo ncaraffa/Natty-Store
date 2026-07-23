@@ -1,0 +1,3 @@
+import { notFound } from "next/navigation"; import { Catalog } from "@/components/catalog"; import type { Category } from "@/types";
+const pages:Record<string,{title:string;category:Category}>={mm2:{title:"Murder Mystery 2",category:"mm2"},ftf:{title:"Flee the Facility",category:"ftf"},"adopt-me":{title:"Adopt Me",category:"adopt-me"}};
+export default async function CategoryPage({params}:{params:Promise<{category:string}>}){const {category}=await params;const page=pages[category];if(!page)notFound();return <section><span className="eyebrow">CATÁLOGO</span><h1>{page.title}</h1><p>Escolha seus itens e adicione ao carrinho.</p><Catalog category={page.category}/></section>}
