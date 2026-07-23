@@ -85,6 +85,7 @@ export default async function AdminProducts() {
               <th>Categoria</th>
               <th>Preço (R$)</th>
               <th>Imagem</th>
+              <th>Mudar descrição</th>
               <th>Ativo</th>
               <th>Slug</th>
               <th>Salvar</th>
@@ -93,7 +94,7 @@ export default async function AdminProducts() {
           <tbody>
             {products.map((product) => (
               <tr key={product.id}>
-                <td colSpan={7} style={{ padding: 0 }}>
+                <td colSpan={8} style={{ padding: 0 }}>
                   <form action={updateProduct} className="admin-table" style={{ display: "table", width: "100%" }}>
                     <input type="hidden" name="id" value={product.id} />
                     <div style={{ display: "table-row" }}>
@@ -114,6 +115,15 @@ export default async function AdminProducts() {
                         <input name="image_url" defaultValue={product.image_url ?? ""} />
                       </div>
                       <div style={{ display: "table-cell", padding: "10px 12px" }}>
+                        <textarea
+                          name="description"
+                          defaultValue={product.description}
+                          rows={2}
+                          maxLength={2000}
+                          style={{ minWidth: "180px" }}
+                        />
+                      </div>
+                      <div style={{ display: "table-cell", padding: "10px 12px" }}>
                         <input type="checkbox" name="active" defaultChecked={product.active} />
                       </div>
                       <div style={{ display: "table-cell", padding: "10px 12px", color: "var(--muted)" }}>
@@ -129,7 +139,7 @@ export default async function AdminProducts() {
             ))}
             {products.length === 0 && !error && (
               <tr>
-                <td colSpan={7}>Nenhum produto cadastrado ainda.</td>
+                <td colSpan={8}>Nenhum produto cadastrado ainda.</td>
               </tr>
             )}
           </tbody>
