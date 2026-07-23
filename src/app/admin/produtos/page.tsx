@@ -45,7 +45,7 @@ export default async function AdminProducts() {
 
       <div className="panel">
         <h2>Novo produto</h2>
-        <form action={createProduct} className="admin-new-form">
+        <form action={createProduct} className="admin-new-form" encType="multipart/form-data">
           <label>
             Nome
             <input required name="name" maxLength={120} />
@@ -66,7 +66,11 @@ export default async function AdminProducts() {
             <input required name="price" inputMode="decimal" placeholder="1,99" />
           </label>
           <label>
-            Imagem (URL)
+            Imagem (arquivo)
+            <input name="image_file" type="file" accept="image/*" />
+          </label>
+          <label>
+            Imagem (URL, opcional se enviar arquivo)
             <input name="image_url" placeholder="https://..." />
           </label>
           <label style={{ gridColumn: "1 / -1" }}>
@@ -95,7 +99,12 @@ export default async function AdminProducts() {
             {products.map((product) => (
               <tr key={product.id}>
                 <td colSpan={8} style={{ padding: 0 }}>
-                  <form action={updateProduct} className="admin-table" style={{ display: "table", width: "100%" }}>
+                  <form
+                    action={updateProduct}
+                    className="admin-table"
+                    style={{ display: "table", width: "100%" }}
+                    encType="multipart/form-data"
+                  >
                     <input type="hidden" name="id" value={product.id} />
                     <div style={{ display: "table-row" }}>
                       <div style={{ display: "table-cell", padding: "10px 12px" }}>
@@ -112,7 +121,16 @@ export default async function AdminProducts() {
                         <input name="price" defaultValue={toReais(product.price_cents)} inputMode="decimal" />
                       </div>
                       <div style={{ display: "table-cell", padding: "10px 12px" }}>
-                        <input name="image_url" defaultValue={product.image_url ?? ""} />
+                        {product.image_url && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={product.image_url}
+                            alt=""
+                            style={{ width: 40, height: 40, objectFit: "cover", borderRadius: 4, display: "block", marginBottom: 4 }}
+                          />
+                        )}
+                        <input name="image_file" type="file" accept="image/*" style={{ maxWidth: 160 }} />
+                        <input name="image_url" defaultValue={product.image_url ?? ""} placeholder="ou cole uma URL" style={{ marginTop: 4 }} />
                       </div>
                       <div style={{ display: "table-cell", padding: "10px 12px" }}>
                         <textarea
