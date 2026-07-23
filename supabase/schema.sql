@@ -1,5 +1,12 @@
 -- Natty Store — esquema revisável. NÃO aplicado a projeto Supabase.
 -- Toda criação de checkout deve chamar reserve_checkout no servidor (service role), nunca inserir pedidos diretamente.
+-- AVISO (2026-07-23): este arquivo diverge do banco real de produção em pontos importantes (já visto duas vezes).
+-- A função reserve_checkout REAL tem assinatura, retorno e colunas diferentes do que este arquivo descreve
+-- (inclui p_auth_user_id, retorna TABLE(...), grava orders.checkout_fingerprint que não existe aqui).
+-- Antes de recriar/alterar reserve_checkout, SEMPRE rode:
+--   select pg_get_functiondef('public.reserve_checkout'::regproc);
+-- e confira supabase/schema.sql contra o resultado real, nunca assuma que este arquivo está atualizado.
+-- Ver sql/10_restore_reserve_checkout.sql para a versão íntegra restaurada + cupons.
 create extension if not exists pgcrypto;
 
 create type public.order_status as enum ('draft','stock_reserved','pending_payment','paid','delivering','completed','cancelled','refunded','expired');

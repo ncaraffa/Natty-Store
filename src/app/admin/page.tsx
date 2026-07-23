@@ -18,6 +18,7 @@ export default async function Admin() {
         <article className="panel"><h2>Pedidos</h2><p>Pagamento e entrega auditáveis.</p><Link href="/admin/pedidos">Gerenciar pedidos</Link></article>
         <article className="panel"><h2>Avaliações</h2><p>Ver e responder avaliações de clientes.</p><Link href="/admin/avaliacoes">Gerenciar avaliações</Link></article>
         <article className="panel"><h2>Banners</h2><p>Promoções, novidades, avisos e eventos.</p><Link href="/admin/banners">Gerenciar banners</Link></article>
+        <article className="panel"><h2>Cupons</h2><p>Cupons de desconto por percentual ou valor fixo.</p><Link href="/admin/cupons">Gerenciar cupons</Link></article>
       </div>
     </section>
   );

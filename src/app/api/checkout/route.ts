@@ -23,6 +23,7 @@ const schema = z
       )
       .min(1)
       .max(30),
+    couponCode: z.string().trim().max(50).optional(),
   })
   .strict();
 
@@ -148,6 +149,8 @@ export async function POST(request: Request) {
       product_id: item.productId,
       quantity: item.quantity,
     })),
+    p_auth_user_id: authUserId,
+    p_coupon_code: parsed.data.couponCode || null,
   });
 
   if (error) {
@@ -175,6 +178,13 @@ export async function POST(request: Request) {
             "Esta tentativa já foi utilizada. Atualize a página e tente novamente.",
         },
         409,
+      );
+    }
+
+    if (error.message.includes("invalid coupon")) {
+      return response(
+        { message: "Cupom inválido, expirado ou esgotado." },
+        400,
       );
     }
 
@@ -215,36 +225,14 @@ export async function POST(request: Request) {
     );
   }
 
-  const orderUpdate: Record<string, unknown> = {
-    payment_provider: "mercado_pago",
-    provider_payment_id: String(payment.pix.paymentId),
-    payment_status: "pending",
-  };
-
-  if (authUserId) {
-    const { data: customer, error: customerError } = await admin
-      .from("customers")
-      .upsert(
-        {
-          auth_user_id: authUserId,
-          roblox_nick: parsed.data.robloxNick,
-          contact: parsed.data.contact,
-        },
-        { onConflict: "auth_user_id" },
-      )
-      .select("id")
-      .single();
-
-    if (customerError) {
-      console.error("Falha ao vincular cliente ao pedido:", customerError.code);
-    } else if (customer) {
-      orderUpdate.customer_id = customer.id;
-    }
-  }
-
+  // reserve_checkout já vincula customer_id via p_auth_user_id quando o cliente está logado.
   const { error: updateError } = await admin
     .from("orders")
-    .update(orderUpdate)
+    .update({
+      payment_provider: "mercado_pago",
+      provider_payment_id: String(payment.pix.paymentId),
+      payment_status: "pending",
+    })
     .eq("id", result.data.order_id);
 
   if (updateError) {

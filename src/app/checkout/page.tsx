@@ -46,6 +46,7 @@ export default function Checkout() {
           robloxNick: form.get("robloxNick"),
           contact: form.get("contact"),
           items: lines,
+          couponCode: form.get("couponCode") || undefined,
         }),
       });
 
@@ -130,6 +131,11 @@ export default function Checkout() {
               minLength={5}
               maxLength={200}
             />
+          </label>
+
+          <label>
+            Cupom de desconto (opcional)
+            <input name="couponCode" autoComplete="off" maxLength={50} />
           </label>
 
           <button disabled={!lines.length || busy}>
