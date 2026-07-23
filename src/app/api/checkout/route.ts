@@ -215,13 +215,36 @@ export async function POST(request: Request) {
     );
   }
 
+  const orderUpdate: Record<string, unknown> = {
+    payment_provider: "mercado_pago",
+    provider_payment_id: String(payment.pix.paymentId),
+    payment_status: "pending",
+  };
+
+  if (authUserId) {
+    const { data: customer, error: customerError } = await admin
+      .from("customers")
+      .upsert(
+        {
+          auth_user_id: authUserId,
+          roblox_nick: parsed.data.robloxNick,
+          contact: parsed.data.contact,
+        },
+        { onConflict: "auth_user_id" },
+      )
+      .select("id")
+      .single();
+
+    if (customerError) {
+      console.error("Falha ao vincular cliente ao pedido:", customerError.code);
+    } else if (customer) {
+      orderUpdate.customer_id = customer.id;
+    }
+  }
+
   const { error: updateError } = await admin
     .from("orders")
-    .update({
-      payment_provider: "mercado_pago",
-      provider_payment_id: String(payment.pix.paymentId),
-      payment_status: "pending",
-    })
+    .update(orderUpdate)
     .eq("id", result.data.order_id);
 
   if (updateError) {
