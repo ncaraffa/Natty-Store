@@ -1,4 +1,4 @@
-import type { Category, Product, StockStatus } from "@/types";
+import type { Category, Product, ProductBadge, StockStatus } from "@/types";
 import { serverSupabase } from "@/lib/supabase/server";
 
 type CatalogRow = {
@@ -9,6 +9,7 @@ type CatalogRow = {
   category: string;
   price_cents: number;
   image_url: string | null;
+  badge: string | null;
   public_status: string;
 };
 
@@ -20,6 +21,7 @@ const statuses: readonly StockStatus[] = [
   "preorder",
   "backorder",
 ];
+const badges: readonly ProductBadge[] = ["new", "promo", "bestseller", "featured"];
 
 function isCategory(value: string): value is Category {
   return categories.includes(value as Category);
@@ -29,6 +31,10 @@ function isStockStatus(value: string): value is StockStatus {
   return statuses.includes(value as StockStatus);
 }
 
+function isProductBadge(value: string): value is ProductBadge {
+  return badges.includes(value as ProductBadge);
+}
+
 export async function getCatalogProducts(category?: Category): Promise<Product[]> {
   const supabase = await serverSupabase();
   if (!supabase) return [];
@@ -36,7 +42,7 @@ export async function getCatalogProducts(category?: Category): Promise<Product[]
   let query = supabase
     .from("catalog_products")
     .select(
-      "id,slug,name,description,category,price_cents,image_url,public_status",
+      "id,slug,name,description,category,price_cents,image_url,badge,public_status",
     )
     .order("name", { ascending: true });
 
@@ -71,5 +77,6 @@ export async function getCatalogProducts(category?: Category): Promise<Product[]
       priceCents: row.price_cents,
       stockStatus: row.public_status as StockStatus,
       image: row.image_url ?? undefined,
+      badge: row.badge && isProductBadge(row.badge) ? row.badge : undefined,
     }));
 }

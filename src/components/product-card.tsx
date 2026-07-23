@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { Product } from "@/types";
+import { badgeLabels } from "@/types";
 import { money, publicStock } from "@/lib/catalog-display";
 import { useCart } from "./cart-provider";
 
@@ -12,6 +13,9 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <article className="card">
+      {product.badge && (
+        <span className={`badge badge-${product.badge}`}>{badgeLabels[product.badge]}</span>
+      )}
       {product.image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img className="product-image" src={product.image} alt={product.name} loading="lazy" />

@@ -12,8 +12,17 @@ type ProductRow = {
   category: string;
   price_cents: number;
   image_url: string | null;
+  badge: string | null;
   active: boolean;
 };
+
+const badgeOptions = [
+  ["", "Sem selo"],
+  ["new", "Novo"],
+  ["promo", "Promoção"],
+  ["bestseller", "Mais vendido"],
+  ["featured", "Destaque"],
+] as const;
 
 function toReais(cents: number) {
   return (cents / 100).toFixed(2);
@@ -24,7 +33,7 @@ export default async function AdminProducts() {
 
   const { data, error } = await db
     .from("products")
-    .select("id,slug,name,description,category,price_cents,image_url,active")
+    .select("id,slug,name,description,category,price_cents,image_url,badge,active")
     .order("created_at", { ascending: false });
 
   const products = (data ?? []) as ProductRow[];
@@ -73,6 +82,16 @@ export default async function AdminProducts() {
             Imagem (URL, opcional se enviar arquivo)
             <input name="image_url" placeholder="https://..." />
           </label>
+          <label>
+            Selo
+            <select name="badge" defaultValue="">
+              {badgeOptions.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
           <label style={{ gridColumn: "1 / -1" }}>
             Descrição
             <textarea name="description" rows={2} maxLength={2000} />
@@ -90,6 +109,7 @@ export default async function AdminProducts() {
               <th>Preço (R$)</th>
               <th>Imagem</th>
               <th>Mudar descrição</th>
+              <th>Selo</th>
               <th>Ativo</th>
               <th>Slug</th>
               <th>Salvar</th>
@@ -98,7 +118,7 @@ export default async function AdminProducts() {
           <tbody>
             {products.map((product) => (
               <tr key={product.id}>
-                <td colSpan={8} style={{ padding: 0 }}>
+                <td colSpan={9} style={{ padding: 0 }}>
                   <form
                     action={updateProduct}
                     className="admin-table"
@@ -142,6 +162,15 @@ export default async function AdminProducts() {
                         />
                       </div>
                       <div style={{ display: "table-cell", padding: "10px 12px" }}>
+                        <select name="badge" defaultValue={product.badge ?? ""}>
+                          {badgeOptions.map(([value, label]) => (
+                            <option key={value} value={value}>
+                              {label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div style={{ display: "table-cell", padding: "10px 12px" }}>
                         <input type="checkbox" name="active" defaultChecked={product.active} />
                       </div>
                       <div style={{ display: "table-cell", padding: "10px 12px", color: "var(--muted)" }}>
@@ -157,7 +186,7 @@ export default async function AdminProducts() {
             ))}
             {products.length === 0 && !error && (
               <tr>
-                <td colSpan={8}>Nenhum produto cadastrado ainda.</td>
+                <td colSpan={9}>Nenhum produto cadastrado ainda.</td>
               </tr>
             )}
           </tbody>

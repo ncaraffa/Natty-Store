@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/admin-auth";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 const categories = ["mm2", "ftf", "adopt-me"] as const;
+const badges = ["", "new", "promo", "bestseller", "featured"] as const;
 const PRODUCT_IMAGES_BUCKET = "product-images";
 
 async function uploadProductImage(db: SupabaseClient, file: File) {
@@ -48,10 +49,12 @@ export async function createProduct(formData: FormData) {
   const priceReais = String(formData.get("price") ?? "").replace(",", ".");
   const priceCents = Math.round(Number(priceReais) * 100);
   const imageUrlInput = String(formData.get("image_url") ?? "").trim();
+  const badge = String(formData.get("badge") ?? "");
 
   if (!name || name.length > 120) throw new Error("Nome inválido.");
   if (!(categories as readonly string[]).includes(category)) throw new Error("Categoria inválida.");
   if (!Number.isFinite(priceCents) || priceCents < 0) throw new Error("Preço inválido.");
+  if (!(badges as readonly string[]).includes(badge)) throw new Error("Selo inválido.");
 
   const imageUrl = await resolveImageUrl(db, formData, imageUrlInput);
   const slug = `${slugify(name)}-${Date.now().toString(36)}`;
@@ -65,6 +68,7 @@ export async function createProduct(formData: FormData) {
       category,
       price_cents: priceCents,
       image_url: imageUrl || null,
+      badge: badge || null,
       active: false,
     })
     .select("id")
@@ -97,11 +101,13 @@ export async function updateProduct(formData: FormData) {
   const priceCents = Math.round(Number(priceReais) * 100);
   const imageUrlInput = String(formData.get("image_url") ?? "").trim();
   const active = formData.get("active") === "on";
+  const badge = String(formData.get("badge") ?? "");
 
   if (!id) throw new Error("Produto inválido.");
   if (!name || name.length > 120) throw new Error("Nome inválido.");
   if (!(categories as readonly string[]).includes(category)) throw new Error("Categoria inválida.");
   if (!Number.isFinite(priceCents) || priceCents < 0) throw new Error("Preço inválido.");
+  if (!(badges as readonly string[]).includes(badge)) throw new Error("Selo inválido.");
 
   const imageUrl = await resolveImageUrl(db, formData, imageUrlInput);
 
@@ -113,6 +119,7 @@ export async function updateProduct(formData: FormData) {
       category,
       price_cents: priceCents,
       image_url: imageUrl || null,
+      badge: badge || null,
       active,
       updated_at: new Date().toISOString(),
     })
