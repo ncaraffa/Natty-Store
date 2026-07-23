@@ -1,4 +1,5 @@
 import { AuthPanel } from "@/components/auth-panel";
+import { SignOutButton } from "@/components/sign-out-button";
 import { money } from "@/lib/catalog-display";
 import { serverSupabase } from "@/lib/supabase/server";
 
@@ -112,6 +113,7 @@ export default async function Account() {
                 Esta conta mostra somente pedidos vinculados ao seu usuário
                 autenticado.
               </p>
+              <SignOutButton />
             </>
           ) : (
             <AuthPanel />
