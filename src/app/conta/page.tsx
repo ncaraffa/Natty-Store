@@ -1,5 +1,6 @@
 import { AuthPanel } from "@/components/auth-panel";
 import { SignOutButton } from "@/components/sign-out-button";
+import { SwitchAccountButton } from "@/components/switch-account-button";
 import { money } from "@/lib/catalog-display";
 import { serverSupabase } from "@/lib/supabase/server";
 
@@ -113,10 +114,13 @@ export default async function Account() {
                 Esta conta mostra somente pedidos vinculados ao seu usuário
                 autenticado.
               </p>
-              <SignOutButton />
+              <div style={{ display: "flex", gap: 8 }}>
+                <SignOutButton />
+                <SwitchAccountButton />
+              </div>
             </>
           ) : (
-            <AuthPanel />
+            <AuthPanel title="Entrar ou criar conta por e-mail" />
           )}
         </article>
 
