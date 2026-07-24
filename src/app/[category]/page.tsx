@@ -8,13 +8,13 @@ const pages: Record<string, { title: string; category: Category; theme: string; 
     title: "Murder Mystery 2",
     category: "mm2",
     theme: "theme-mm2",
-    blurb: "Facas, animações e itens raros para brilhar em toda rodada.",
+    blurb: "Skins, armas e sets.",
   },
   ftf: {
     title: "Flee the Facility",
     category: "ftf",
     theme: "theme-ftf",
-    blurb: "Skins e acessórios para escapar com estilo.",
+    blurb: "Sets e marretas para escapar com estilo.",
   },
   "adopt-me": {
     title: "Adopt Me",

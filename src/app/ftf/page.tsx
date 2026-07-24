@@ -12,7 +12,7 @@ export default function FTFPage() {
         </nav>
         <span className="eyebrow">Catálogo</span>
         <h1>Flee the Facility</h1>
-        <p>Skins e acessórios para escapar com estilo.</p>
+        <p>Sets e marretas para escapar com estilo.</p>
       </div>
       <Catalog category="ftf" />
     </section>

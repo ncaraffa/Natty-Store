@@ -81,14 +81,14 @@ const games = [
     theme: "theme-mm2",
     name: "Murder Mystery 2",
     tag: "MM2",
-    blurb: "Facas, animações e itens raros para brilhar na rodada.",
+    blurb: "Skins, armas e sets.",
   },
   {
     href: "/ftf",
     theme: "theme-ftf",
     name: "Flee the Facility",
     tag: "FTF",
-    blurb: "Skins e acessórios para escapar com estilo.",
+    blurb: "Sets e marretas para escapar com estilo.",
   },
   {
     href: "/adopt-me",
@@ -128,8 +128,8 @@ export default function Home() {
         </div>
 
         <div style={{ position: "relative" }}>
-          <Sparkle style={{ top: "6%", right: "4%" }} />
-          <Sparkle style={{ bottom: "10%", left: "-2%", width: 14, height: 14 }} />
+          <Sparkle style={{ top: "6%", right: "4%", animationDelay: "0.3s" }} />
+          <Sparkle style={{ bottom: "10%", left: "-2%", width: 14, height: 14, animationDelay: "1.1s" }} />
           <div className="logo-card">
             <Image
               src="/logo.png"

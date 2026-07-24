@@ -60,6 +60,7 @@ export function Header() {
   const { count } = useCart();
   const pathname = usePathname();
   const [unread, setUnread] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -77,6 +78,19 @@ export function Header() {
     return () => {
       cancelled = true;
       clearInterval(id);
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/auth/is-admin")
+      .then((r) => r.json())
+      .then((d) => {
+        if (!cancelled) setIsAdmin(Boolean(d.isAdmin));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
     };
   }, []);
 
@@ -105,7 +119,8 @@ export function Header() {
   );
 
   return (
-    <header className={`header${scrolled ? " is-scrolled" : ""}`}>
+    <>
+      <header className={`header${scrolled ? " is-scrolled" : ""}`}>
       <Link className="brand" href="/" aria-label="Natty Store — página inicial">
         <span className="brand-mark" aria-hidden="true">
           N
@@ -130,7 +145,7 @@ export function Header() {
           <SearchIcon />
           <span className="sr-only">Buscar</span>
         </Link>
-        <Link href="/conta">Minha conta</Link>
+        <Link href={isAdmin ? "/admin" : "/conta"}>{isAdmin ? "Painel admin" : "Minha conta"}</Link>
         <Link className="pill" href="/carrinho" aria-label={`Carrinho com ${count} ${count === 1 ? "item" : "itens"}`}>
           <CartIcon />
           Carrinho {count > 0 && <span>({count})</span>}
@@ -147,7 +162,11 @@ export function Header() {
         <MenuIcon />
         Menu
       </button>
+      </header>
 
+      {/* Irmão do <header>, nunca descendente: em Safari, position:fixed
+          dentro de um ancestral position:sticky fica preso na caixa do
+          sticky em vez de cobrir a viewport inteira. */}
       <div className="mobile-menu-panel" hidden={!menuOpen} onClick={() => setMenuOpen(false)}>
         <div
           className="mobile-menu-sheet"
@@ -188,13 +207,13 @@ export function Header() {
 
           <div className="actions-stack">
             <Link href="/busca">Buscar produtos</Link>
-            <Link href="/conta">Minha conta</Link>
+            <Link href={isAdmin ? "/admin" : "/conta"}>{isAdmin ? "Painel admin" : "Minha conta"}</Link>
             <Link className="pill" href="/carrinho">
               Carrinho {count > 0 ? `(${count})` : ""}
             </Link>
           </div>
         </div>
       </div>
-    </header>
+    </>
   );
 }

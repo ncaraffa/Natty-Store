@@ -12,7 +12,7 @@ export default function MM2Page() {
         </nav>
         <span className="eyebrow">Catálogo</span>
         <h1>Murder Mystery 2</h1>
-        <p>Facas, animações e itens raros para brilhar em toda rodada.</p>
+        <p>Skins, armas e sets.</p>
       </div>
       <Catalog category="mm2" />
     </section>

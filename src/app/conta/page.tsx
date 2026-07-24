@@ -31,14 +31,6 @@ const orderLabels: Record<string, string> = {
   expired: "Expirado",
 };
 
-const paymentLabels: Record<string, string> = {
-  not_started: "Pagamento não iniciado",
-  pending: "Pagamento pendente",
-  approved: "Pagamento aprovado",
-  rejected: "Pagamento rejeitado",
-  refunded: "Pagamento reembolsado",
-};
-
 const orderStatusTone: Record<string, string> = {
   paid: "is-positive",
   delivering: "is-positive",
@@ -63,6 +55,28 @@ function OrderIcon() {
       <path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7" stroke="currentColor" strokeWidth="1.4" />
     </svg>
   );
+}
+
+const PENDING_DISPLAY_WINDOW_MS = 5 * 60 * 1000;
+
+function paymentDisplay(order: OrderRow): { label: string; tone: string } {
+  if (order.payment_status === "approved") {
+    return { label: "Pago", tone: "is-positive" };
+  }
+  if (order.payment_status === "rejected") {
+    return { label: "Pagamento rejeitado", tone: "is-negative" };
+  }
+  if (order.payment_status === "refunded") {
+    return { label: "Pagamento reembolsado", tone: "is-negative" };
+  }
+
+  const elapsedMs = Date.now() - new Date(order.created_at).getTime();
+
+  if (elapsedMs < PENDING_DISPLAY_WINDOW_MS) {
+    return { label: "Pagamento pendente", tone: "is-attention" };
+  }
+
+  return { label: "Não foi pago", tone: "is-negative" };
 }
 
 function formatDate(value: string) {
@@ -152,6 +166,9 @@ export default async function Account() {
 
         <article className="panel">
           <h2>Meus pedidos</h2>
+          <p className="field-help" style={{ marginTop: -8, marginBottom: 8 }}>
+            Acompanhe aqui o status de pagamento de cada pedido em tempo real.
+          </p>
 
           {!authData.user ? (
             <p>Entre por e-mail para consultar seus próprios pedidos.</p>
@@ -172,6 +189,8 @@ export default async function Account() {
                   (item) => item.order_id === order.id,
                 );
 
+                const payment = paymentDisplay(order);
+
                 return (
                   <article className="cart-line order-card" key={order.id}>
                     <div className="order-card__head">
@@ -186,9 +205,7 @@ export default async function Account() {
                       <span className={`order-status ${orderStatusTone[order.status] ?? ""}`}>
                         {orderLabels[order.status] ?? order.status}
                       </span>
-                      <span className="order-card__meta">
-                        {paymentLabels[order.payment_status] ?? order.payment_status}
-                      </span>
+                      <span className={`order-status ${payment.tone}`}>{payment.label}</span>
                     </div>
 
                     {orderItems.length > 0 && (
