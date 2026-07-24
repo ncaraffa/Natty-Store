@@ -119,6 +119,17 @@
   color: var(--color-brand-strong);
   font-size: 0.65rem;
   font-weight: 800;
+  animation: badge-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(223, 185, 216, 0.65);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(223, 185, 216, 0);
+  }
 }
 
 /* Menu mobile */
