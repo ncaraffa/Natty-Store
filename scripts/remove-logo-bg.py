@@ -1,41 +1,43 @@
 from PIL import Image
-from collections import deque
 import sys
 
 src = sys.argv[1]
 dst = sys.argv[2]
 
+BLACK_THRESHOLD = 60  # abaixo disso, é considerado fundo preto (inclui halo de anti-aliasing)
+FEATHER = 25          # faixa de suavização acima do threshold, evita borda serrilhada
+
 img = Image.open(src).convert("RGBA")
 w, h = img.size
 px = img.load()
 
-def is_bgish(p):
-    r, g, b, a = p
-    return r < 40 and g < 40 and b < 40
-
-visited = [[False] * w for _ in range(h)]
-q = deque()
-
-for x in range(w):
-    for y in (0, h - 1):
-        if is_bgish(px[x, y]):
-            q.append((x, y))
-            visited[y][x] = True
+# Remoção global por chroma-key: qualquer pixel próximo do preto vira transparente,
+# esteja ele na borda da imagem ou "preso" dentro de um vão de letra (ex: dentro do "a", "o").
+# Flood-fill a partir da borda deixava esses vãos internos como manchas pretas.
 for y in range(h):
-    for x in (0, w - 1):
-        if is_bgish(px[x, y]):
-            q.append((x, y))
-            visited[y][x] = True
+    for x in range(w):
+        r, g, b, a = px[x, y]
+        lum = max(r, g, b)
+        if lum <= BLACK_THRESHOLD:
+            px[x, y] = (r, g, b, 0)
+        elif lum <= BLACK_THRESHOLD + FEATHER:
+            factor = (lum - BLACK_THRESHOLD) / FEATHER
+            px[x, y] = (r, g, b, int(a * factor))
 
-while q:
-    x, y = q.popleft()
-    r, g, b, a = px[x, y]
-    px[x, y] = (r, g, b, 0)
-    for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-        nx, ny = x + dx, y + dy
-        if 0 <= nx < w and 0 <= ny < h and not visited[ny][nx] and is_bgish(px[nx, ny]):
-            visited[ny][nx] = True
-            q.append((nx, ny))
+# Recorta para a caixa delimitadora do conteúdo opaco e adiciona uma margem simétrica,
+# assim a logo fica centralizada dentro do próprio arquivo (não só dentro do card no site).
+bbox = img.getbbox()
+if bbox:
+    cropped = img.crop(bbox)
+    cw, ch = cropped.size
+    side = max(cw, ch)
+    margin = int(side * 0.06)
+    canvas_size = side + margin * 2
+    canvas = Image.new("RGBA", (canvas_size, canvas_size), (0, 0, 0, 0))
+    paste_x = (canvas_size - cw) // 2
+    paste_y = (canvas_size - ch) // 2
+    canvas.paste(cropped, (paste_x, paste_y), cropped)
+    img = canvas
 
 img.save(dst)
-print("saved", dst)
+print("saved", dst, img.size)
