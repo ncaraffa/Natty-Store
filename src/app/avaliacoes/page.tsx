@@ -25,10 +25,23 @@ type EligibleOrderRow = { id: string; created_at: string };
 function Stars({ value }: { value: number }) {
   const full = Math.round(value);
   return (
-    <span aria-label={`${value} de 5 estrelas`} title={`${value} de 5 estrelas`}>
+    <span className="stars" aria-label={`${value} de 5 estrelas`} title={`${value} de 5 estrelas`}>
       {"★".repeat(full)}
       {"☆".repeat(5 - full)}
     </span>
+  );
+}
+
+function ReviewIcon() {
+  return (
+    <svg className="empty-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12 3l2.6 5.4 5.9.9-4.3 4.2 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.2 5.9-.9L12 3z"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
@@ -100,20 +113,27 @@ export default async function Avaliacoes() {
 
   return (
     <section>
-      <span className="eyebrow">CLIENTES</span>
+      <span className="eyebrow">Clientes</span>
       <h1>Avaliações da loja</h1>
 
       <div className="two">
-        <article className="panel">
+        <article className="panel rating-summary">
           <h2>Média geral</h2>
-          <p style={{ fontSize: "2rem" }}>
-            <Stars value={average} /> {average.toFixed(2)}
-          </p>
-          <p>{total} avaliação{total === 1 ? "" : "s"} verificada{total === 1 ? "" : "s"}</p>
-          <div className="list">
+          <Stars value={average} />
+          <span className="rating-value">{average.toFixed(1)}</span>
+          <span className="rating-count">
+            {total} avaliação{total === 1 ? "" : "s"} verificada{total === 1 ? "" : "s"}
+          </span>
+          <div className="rating-distribution">
             {distribution.map((row) => (
-              <div key={row.star} style={{ display: "flex", gap: "0.5rem" }}>
+              <div className="rating-bar-row" key={row.star}>
                 <span>{row.star}★</span>
+                <div className="rating-bar-track">
+                  <div
+                    className="rating-bar-fill"
+                    style={{ width: total ? `${(row.count / total) * 100}%` : "0%" }}
+                  />
+                </div>
                 <span>{row.count}</span>
               </div>
             ))}
@@ -162,23 +182,33 @@ export default async function Avaliacoes() {
         </article>
       </div>
 
-      <h2>O que os clientes dizem</h2>
+      <div className="section-head">
+        <div>
+          <span className="eyebrow">Depoimentos</span>
+          <h2>O que os clientes dizem</h2>
+        </div>
+      </div>
       {reviews.length === 0 ? (
-        <div className="empty">Ainda não há avaliações.</div>
+        <div className="empty">
+          <ReviewIcon />
+          <h2>Ainda não há avaliações</h2>
+          <p>Seja a primeira pessoa a avaliar uma compra na Natty Store.</p>
+        </div>
       ) : (
         <div className="list">
           {reviews.map((review) => (
-            <article className="cart-line" key={review.id}>
+            <article className="cart-line review-card" key={review.id}>
               <div>
-                <p>
-                  <Stars value={review.rating} /> · {formatDate(review.created_at)}{" "}
+                <div className="review-card__head">
+                  <Stars value={review.rating} />
+                  <span className="muted">{formatDate(review.created_at)}</span>
                   <span className="pill">Compra verificada</span>
-                </p>
+                </div>
                 {review.comment && <p>{review.comment}</p>}
                 {review.admin_reply && (
-                  <p>
+                  <div className="review-card__reply">
                     <strong>Resposta da Natty Store:</strong> {review.admin_reply}
-                  </p>
+                  </div>
                 )}
               </div>
             </article>

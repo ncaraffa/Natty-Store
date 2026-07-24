@@ -53,42 +53,62 @@ export default function Orders() {
 
   return (
     <section className="narrow">
-      <span className="eyebrow">PEDIDO PERSONALIZADO</span>
+      <span className="eyebrow">Pedido personalizado</span>
       <h1>Faça uma encomenda</h1>
       <p>
         Não encontrou o item? Conte o que procura. A solicitação será salva para
         análise e não garante disponibilidade, prazo ou preço.
       </p>
 
-      <form onSubmit={submit}>
-        <label>
+      <div className="how-it-works">
+        <div className="how-step">
+          <span className="how-step__index">1</span>
+          <h3>Conte o que procura</h3>
+          <p>Descreva o item, o jogo e seu contato preferido.</p>
+        </div>
+        <div className="how-step">
+          <span className="how-step__index">2</span>
+          <h3>Análise da loja</h3>
+          <p>A administradora avalia disponibilidade e prazo.</p>
+        </div>
+        <div className="how-step">
+          <span className="how-step__index">3</span>
+          <h3>Retorno combinado</h3>
+          <p>Você recebe uma resposta pelo contato informado.</p>
+        </div>
+      </div>
+
+      <form onSubmit={submit} className="panel">
+        <label className="field-required">
           Seu nome
           <input required name="name" autoComplete="name" maxLength={120} />
         </label>
 
-        <label>
-          Nick no Roblox
-          <input
-            required
-            name="robloxNick"
-            autoComplete="off"
-            minLength={3}
-            maxLength={80}
-          />
-        </label>
+        <div className="two-col-form">
+          <label className="field-required">
+            Nick no Roblox
+            <input
+              required
+              name="robloxNick"
+              autoComplete="off"
+              minLength={3}
+              maxLength={80}
+            />
+          </label>
 
-        <label>
-          Contato (WhatsApp, Instagram, TikTok ou e-mail)
-          <input
-            required
-            name="contact"
-            autoComplete="email"
-            minLength={5}
-            maxLength={200}
-          />
-        </label>
+          <label className="field-required">
+            Contato (WhatsApp, Instagram, TikTok ou e-mail)
+            <input
+              required
+              name="contact"
+              autoComplete="email"
+              minLength={5}
+              maxLength={200}
+            />
+          </label>
+        </div>
 
-        <label>
+        <label className="field-required">
           Jogo
           <select required name="game" defaultValue="">
             <option value="" disabled>
@@ -101,7 +121,7 @@ export default function Orders() {
           </select>
         </label>
 
-        <label>
+        <label className="field-required">
           O que você procura?
           <textarea required name="request" rows={5} minLength={5} maxLength={2000} />
         </label>
@@ -122,7 +142,9 @@ export default function Orders() {
           </label>
         </div>
 
-        <button disabled={busy}>{busy ? "Enviando…" : "Enviar solicitação"}</button>
+        <div className="form-actions">
+          <button disabled={busy}>{busy ? "Enviando…" : "Enviar solicitação"}</button>
+        </div>
 
         {message && (
           <div

@@ -8,6 +8,20 @@ import type { Product } from "@/types";
 
 type CatalogResponse = { products?: Product[] };
 
+function BagIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M6 8h12l1.2 12.2a1.5 1.5 0 0 1-1.5 1.8H6.3a1.5 1.5 0 0 1-1.5-1.8L6 8z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export default function Cart() {
   const { lines, setQuantity, remove } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
@@ -57,7 +71,7 @@ export default function Cart() {
 
   return (
     <section>
-      <span className="eyebrow">SEU PEDIDO</span>
+      <span className="eyebrow">Seu pedido</span>
       <h1>Carrinho</h1>
 
       {loading ? (
@@ -66,7 +80,9 @@ export default function Cart() {
         <div className="warning">Não foi possível carregar o catálogo.</div>
       ) : !lines.length ? (
         <div className="empty">
+          <BagIcon className="empty-glyph" />
           <h2>Seu carrinho está vazio</h2>
+          <p>Adicione itens do catálogo para começar sua compra.</p>
           <Link className="button" href="/">
             Explorar catálogo
           </Link>
@@ -76,31 +92,68 @@ export default function Cart() {
           <div className="list">
             {detailed.map((item) => (
               <article className="cart-line" key={item.productId}>
-                <div>
-                  <h3>{item.product.name}</h3>
-                  <span>{money(item.product.priceCents)}</span>
+                <div className="cart-line-main">
+                  <div className="cart-line-media" aria-hidden="true">
+                    {item.product.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.product.image} alt="" />
+                    ) : (
+                      <BagIcon />
+                    )}
+                  </div>
+                  <div className="cart-line-info">
+                    <h3>{item.product.name}</h3>
+                    <span className="price">{money(item.product.priceCents)}</span>
+                  </div>
                 </div>
-                <label>
-                  Quantidade
-                  <input
-                    aria-label={`Quantidade de ${item.product.name}`}
-                    type="number"
-                    inputMode="numeric"
-                    min="1"
-                    max="99"
-                    value={item.quantity}
-                    onChange={(event) =>
-                      setQuantity(item.productId, Number(event.target.value))
-                    }
-                  />
-                </label>
-                <button
-                  type="button"
-                  className="link-button"
-                  onClick={() => remove(item.productId)}
-                >
-                  Remover
-                </button>
+
+                <div className="cart-line-side">
+                  <div className="qty-field">
+                    <label htmlFor={`qty-${item.productId}`}>Quantidade</label>
+                    <div className="qty-stepper">
+                      <button
+                        type="button"
+                        className="button sm ghost"
+                        aria-label={`Diminuir quantidade de ${item.product.name}`}
+                        onClick={() => setQuantity(item.productId, item.quantity - 1)}
+                      >
+                        −
+                      </button>
+                      <input
+                        id={`qty-${item.productId}`}
+                        aria-label={`Quantidade de ${item.product.name}`}
+                        type="number"
+                        inputMode="numeric"
+                        min="1"
+                        max="99"
+                        value={item.quantity}
+                        onChange={(event) =>
+                          setQuantity(item.productId, Number(event.target.value))
+                        }
+                      />
+                      <button
+                        type="button"
+                        className="button sm ghost"
+                        aria-label={`Aumentar quantidade de ${item.product.name}`}
+                        onClick={() => setQuantity(item.productId, item.quantity + 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <span className="line-subtotal price">
+                    {money(item.quantity * item.product.priceCents)}
+                  </span>
+
+                  <button
+                    type="button"
+                    className="link-button"
+                    onClick={() => remove(item.productId)}
+                  >
+                    Remover
+                  </button>
+                </div>
               </article>
             ))}
 
@@ -123,21 +176,24 @@ export default function Cart() {
 
           <aside className="summary">
             <h2>Resumo</h2>
-            <div className="row">
+            <div className="summary-row total">
               <span>Total</span>
-              <strong>{money(total)}</strong>
+              <strong className="price">{money(total)}</strong>
             </div>
             <p>
-              O site mostra apenas o status público. Quantidades internas de estoque
-              permanecem protegidas.
+              O site mostra apenas o status público. Quantidades internas de
+              estoque permanecem protegidas.
             </p>
             {detailed.length > 0 && missing.length === 0 ? (
-              <Link className="button" href="/checkout">
-                Continuar
+              <Link className="button block" href="/checkout">
+                Continuar para o checkout
               </Link>
             ) : (
               <p className="warning">Remova os itens indisponíveis para continuar.</p>
             )}
+            <Link className="button ghost block" href="/">
+              Continuar comprando
+            </Link>
           </aside>
         </div>
       )}

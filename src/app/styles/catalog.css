@@ -1,0 +1,340 @@
+/* Home — hero */
+.hero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--space-12);
+  align-items: center;
+  min-height: 480px;
+  position: relative;
+}
+
+.hero-copy .eyebrow {
+  margin-bottom: var(--space-3);
+}
+
+.hero p {
+  font-size: 1.15rem;
+  color: var(--color-text-muted);
+  max-width: 540px;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.logo-card {
+  position: relative;
+  aspect-ratio: 1.05;
+  display: grid;
+  place-content: center;
+  border-radius: var(--radius-xl);
+  background: radial-gradient(circle at 30% 20%, #ffffff, var(--lilac) 45%, #c092c4 100%);
+  box-shadow: var(--shadow-lg);
+  border: 10px solid var(--color-surface-elevated);
+  transform: rotate(2deg);
+}
+
+.logo-card::before,
+.logo-card::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow-sm);
+}
+
+.logo-card::before {
+  width: 26px;
+  height: 26px;
+  top: 8%;
+  left: -6%;
+}
+
+.logo-card::after {
+  width: 16px;
+  height: 16px;
+  bottom: 14%;
+  right: -4%;
+}
+
+.hero-sparkle {
+  position: absolute;
+  color: var(--color-accent-pink);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* Cards de navegação por jogo */
+.game-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.game-nav-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 220px;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  color: #fff;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.game-nav-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.game-nav-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.9;
+  z-index: 0;
+}
+
+.game-nav-card.theme-mm2::before {
+  background: radial-gradient(120% 140% at 100% 0%, #6a469b 0%, #2c1a42 100%);
+}
+.game-nav-card.theme-ftf::before {
+  background: radial-gradient(120% 140% at 100% 0%, #4a6a9b 0%, #1f3352 100%);
+}
+.game-nav-card.theme-adopt::before {
+  background: radial-gradient(120% 140% at 100% 0%, #c987b9 0%, #7a4a86 100%);
+}
+
+.game-nav-card__motif {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.game-nav-card__body {
+  position: relative;
+  z-index: 1;
+}
+
+.game-nav-card__body .eyebrow {
+  color: #f0e3f8;
+}
+
+.game-nav-card__body .eyebrow::before {
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.game-nav-card h3 {
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin: 6px 0 4px;
+}
+
+.game-nav-card p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.88rem;
+  margin: 0 0 var(--space-4);
+}
+
+.game-nav-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #fff;
+}
+
+.game-nav-card__link svg {
+  transition: transform var(--transition-fast);
+}
+
+.game-nav-card:hover .game-nav-card__link svg {
+  transform: translateX(3px);
+}
+
+/* Encomendas CTA (home) */
+.custom-order-banner {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+  background: linear-gradient(135deg, var(--lilac-soft) 0%, var(--pink-soft) 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  position: relative;
+}
+
+.custom-order-banner__art {
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-elevated);
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-md);
+  color: var(--color-brand-primary);
+}
+
+.custom-order-banner__art svg {
+  width: 45%;
+  height: 45%;
+}
+
+/* Faixa de confiança */
+.trust-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.trust-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: var(--space-5);
+}
+
+.trust-item svg {
+  width: 26px;
+  height: 26px;
+  color: var(--color-brand-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.trust-item h3 {
+  font-size: 0.98rem;
+  margin-bottom: 2px;
+}
+
+.trust-item p {
+  font-size: 0.86rem;
+  margin: 0;
+}
+
+/* Hero de categoria */
+.category-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-8);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-10);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.category-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.category-hero.theme-mm2::before {
+  background: radial-gradient(130% 160% at 0% 0%, #6a469b 0%, #241536 100%);
+}
+.category-hero.theme-ftf::before {
+  background: radial-gradient(130% 160% at 0% 0%, #4a6a9b 0%, #172436 100%);
+}
+.category-hero.theme-adopt::before {
+  background: radial-gradient(130% 160% at 0% 0%, #d79fca 0%, #7a4a86 100%);
+}
+
+.category-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.category-hero .eyebrow {
+  color: #f0e3f8;
+}
+
+.category-hero .eyebrow::before {
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.category-hero h1 {
+  color: #fff;
+  margin: 4px 0;
+}
+
+.category-hero p {
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 60ch;
+  margin: 0;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: var(--space-2);
+}
+
+.breadcrumb a {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 850px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-top: var(--space-4);
+    text-align: left;
+  }
+  .logo-card {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .game-nav-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .custom-order-banner {
+    grid-template-columns: 1fr;
+  }
+  .custom-order-banner__art {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+  .trust-strip {
+    grid-template-columns: 1fr;
+  }
+  .category-hero {
+    padding: var(--space-6);
+  }
+}
+
+@media (max-width: 560px) {
+  .game-nav-grid {
+    grid-template-columns: 1fr;
+  }
+  .logo-card {
+    display: none;
+  }
+  h1,
+  .narrow h1 {
+    font-size: clamp(1.9rem, 8vw, 2.4rem);
+  }
+}

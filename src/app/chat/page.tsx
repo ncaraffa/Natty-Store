@@ -27,6 +27,19 @@ function formatDate(value: string) {
   }).format(date);
 }
 
+function ChatEmptyIcon() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M4 5h16v11H9l-4 4V5z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default async function Chat() {
   const supabase = await serverSupabase();
   const { data: authData } = supabase
@@ -36,7 +49,7 @@ export default async function Chat() {
   if (!supabase || !authData.user) {
     return (
       <section className="narrow">
-        <span className="eyebrow">SUPORTE</span>
+        <span className="eyebrow">Suporte</span>
         <h1>Chat com a loja</h1>
         <p>Entre na sua conta para conversar com a administradora da Natty Store.</p>
       </section>
@@ -62,63 +75,64 @@ export default async function Chat() {
   return (
     <section className="narrow">
       <ChatAutoRefresh />
-      <span className="eyebrow">SUPORTE</span>
+      <span className="eyebrow">Suporte</span>
       <h1>Chat com a loja</h1>
       <p>Converse diretamente com a administradora sobre seu pedido, dúvidas ou suporte.</p>
-      {isClosed && (
-        <div className="notice">
-          Esta conversa foi encerrada. Envie uma nova mensagem a qualquer momento para reabrir.
-        </div>
-      )}
 
-      <div className="panel" style={{ maxHeight: 480, overflowY: "auto" }}>
-        {messages.length === 0 ? (
-          <div className="empty">Nenhuma mensagem ainda. Diga oi!</div>
-        ) : (
-          <div className="list">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className="cart-line"
-                style={{
-                  flexDirection: "column",
-                  alignItems: message.sender_role === "customer" ? "flex-end" : "flex-start",
-                  background: message.sender_role === "customer" ? "#f0e9fa" : "#fff",
-                }}
-              >
-                <strong style={{ fontSize: 12 }}>
-                  {message.sender_role === "customer" ? "Você" : "Natty Store"} · {formatDate(message.created_at)}
-                </strong>
-                {message.body && <p>{message.body}</p>}
-                {message.image_url && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={message.image_url}
-                    alt="Imagem enviada no chat"
-                    style={{ maxWidth: 240, borderRadius: 8, marginTop: 6 }}
-                  />
-                )}
-              </div>
-            ))}
+      <div className="chat-shell">
+        {isClosed && (
+          <div className="chat-status">
+            <span className="muted">
+              Esta conversa foi encerrada. Envie uma nova mensagem a qualquer momento para reabrir.
+            </span>
           </div>
         )}
+
+        <div className="chat-thread" role="log" aria-live="polite">
+          {messages.length === 0 ? (
+            <div className="chat-empty">
+              <ChatEmptyIcon />
+              <p>Nenhuma mensagem ainda. Diga oi!</p>
+            </div>
+          ) : (
+            messages.map((message) => (
+              <div
+                key={message.id}
+                className={`chat-bubble-row ${message.sender_role === "customer" ? "is-customer" : "is-admin"}`}
+              >
+                <div className="chat-bubble">
+                  <span className="chat-bubble__meta">
+                    {message.sender_role === "customer" ? "Você" : "Natty Store"} · {formatDate(message.created_at)}
+                  </span>
+                  {message.body && <p>{message.body}</p>}
+                  {message.image_url && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={message.image_url} alt="Imagem enviada no chat" />
+                  )}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        <form action={sendCustomerMessage} encType="multipart/form-data" className="chat-composer">
+          <input type="hidden" name="conversation_id" value={conversationId} />
+          <label>
+            Mensagem
+            <textarea name="body" rows={2} maxLength={4000} placeholder="Escreva sua mensagem..." />
+          </label>
+          <div className="form-actions">
+            <label style={{ flex: 1, minWidth: 200 }}>
+              Imagem ou comprovante (opcional)
+              <input name="image" type="file" accept="image/*" />
+            </label>
+            <button style={{ alignSelf: "end" }}>Enviar</button>
+          </div>
+        </form>
       </div>
 
-      <form action={sendCustomerMessage} encType="multipart/form-data">
-        <input type="hidden" name="conversation_id" value={conversationId} />
-        <label>
-          Mensagem
-          <textarea name="body" rows={3} maxLength={4000} placeholder="Escreva sua mensagem..." />
-        </label>
-        <label>
-          Imagem ou comprovante (opcional)
-          <input name="image" type="file" accept="image/*" />
-        </label>
-        <button>Enviar</button>
-      </form>
-
       {!isClosed && (
-        <form action={closeConversationByCustomer} style={{ marginTop: 12 }}>
+        <form action={closeConversationByCustomer} className="chat-close-form">
           <input type="hidden" name="conversation_id" value={conversationId} />
           <button type="submit" className="link-button">
             Encerrar conversa

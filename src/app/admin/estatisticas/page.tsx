@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/admin-auth";
+import { AdminShell } from "@/components/admin-shell";
 
 export const dynamic = "force-dynamic";
 
@@ -36,47 +37,54 @@ export default async function AdminEstatisticas() {
     .slice(0, 10);
 
   return (
-    <section>
-      <div className="admin-toolbar">
-        <div>
-          <span className="eyebrow">ADMINISTRAÇÃO</span>
-          <h1>Estatísticas</h1>
+    <AdminShell activeKey="estatisticas">
+      <section>
+        <div className="admin-toolbar">
+          <div>
+            <span className="eyebrow">ADMINISTRAÇÃO</span>
+            <h1>Estatísticas</h1>
+          </div>
+          <Link href="/admin" className="button ghost">
+            Voltar
+          </Link>
         </div>
-        <Link href="/admin" className="button ghost">
-          Voltar
-        </Link>
-      </div>
 
-      <div className="grid">
-        <article className="panel">
-          <h2>Receita paga</h2>
-          <p style={{ fontSize: "1.8rem" }}>R$ {toReais(totalRevenueCents)}</p>
-          <p>{paidOrders.length} pedido{paidOrders.length === 1 ? "" : "s"} pago{paidOrders.length === 1 ? "" : "s"}</p>
-        </article>
-        <article className="panel">
-          <h2>Total de pedidos</h2>
-          <p style={{ fontSize: "1.8rem" }}>{orders.length}</p>
-          <p>{pendingOrders} pendente{pendingOrders === 1 ? "" : "s"} · {cancelledOrders} cancelado{cancelledOrders === 1 ? "" : "s"}</p>
-        </article>
-        <article className="panel">
-          <h2>Produtos cadastrados</h2>
-          <p style={{ fontSize: "1.8rem" }}>{productsResult.count ?? 0}</p>
-        </article>
-      </div>
-
-      <h2>Mais vendidos</h2>
-      {topProducts.length === 0 ? (
-        <div className="empty">Nenhuma venda registrada ainda.</div>
-      ) : (
-        <div className="list">
-          {topProducts.map(([name, quantity]) => (
-            <div key={name} className="cart-line">
-              <span>{name}</span>
-              <strong>{quantity} unidade{quantity === 1 ? "" : "s"}</strong>
-            </div>
-          ))}
+        <div className="admin-stat-grid">
+          <article className="panel admin-stat-card">
+            <h2>Receita paga</h2>
+            <p className="admin-stat-value">R$ {toReais(totalRevenueCents)}</p>
+            <p>{paidOrders.length} pedido{paidOrders.length === 1 ? "" : "s"} pago{paidOrders.length === 1 ? "" : "s"}</p>
+          </article>
+          <article className="panel admin-stat-card">
+            <h2>Total de pedidos</h2>
+            <p className="admin-stat-value">{orders.length}</p>
+            <p>
+              {pendingOrders} pendente{pendingOrders === 1 ? "" : "s"} · {cancelledOrders} cancelado{cancelledOrders === 1 ? "" : "s"}
+            </p>
+          </article>
+          <article className="panel admin-stat-card">
+            <h2>Produtos cadastrados</h2>
+            <p className="admin-stat-value">{productsResult.count ?? 0}</p>
+          </article>
         </div>
-      )}
-    </section>
+
+        <h2>Mais vendidos</h2>
+        {topProducts.length === 0 ? (
+          <div className="empty">Nenhuma venda registrada ainda.</div>
+        ) : (
+          <div className="admin-rank-list">
+            {topProducts.map(([name, quantity], index) => (
+              <div key={name} className="cart-line admin-rank-row">
+                <span className="admin-rank-number">{index + 1}</span>
+                <span className="admin-rank-name">{name}</span>
+                <strong>
+                  {quantity} unidade{quantity === 1 ? "" : "s"}
+                </strong>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+    </AdminShell>
   );
 }

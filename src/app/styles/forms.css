@@ -1,0 +1,163 @@
+/* Formulários — padrão visual compartilhado */
+
+form {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+label {
+  display: block;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: var(--color-text);
+}
+
+input,
+textarea,
+select {
+  display: block;
+  width: 100%;
+  padding: 13px 14px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-elevated);
+  margin-top: 7px;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--color-text);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-soft);
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: var(--color-border-focus);
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background: var(--color-surface-sunken);
+  color: var(--color-text-soft);
+  cursor: not-allowed;
+}
+
+input[type="checkbox"] {
+  width: auto;
+  display: inline-block;
+  margin: 0;
+  accent-color: var(--color-brand-primary);
+  width: 20px;
+  height: 20px;
+}
+
+input[type="file"] {
+  padding: 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-right: 10px;
+  background: var(--purple-100);
+  color: var(--color-brand-strong);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.5;
+}
+
+select {
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-brand-primary) 50%), linear-gradient(135deg, var(--color-brand-primary) 50%, transparent 50%);
+  background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 40px;
+  appearance: none;
+}
+
+.field-help {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.field-required::after {
+  content: " *";
+  color: var(--color-danger);
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.checkbox-field input {
+  margin-top: 0;
+}
+
+.two-col-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4) var(--space-5);
+}
+
+.two-col-form > .field-full {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Formulário de novo item administrativo */
+.admin-new-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--space-4);
+  align-items: end;
+  margin-top: var(--space-5);
+}
+
+.admin-new-form label {
+  font-size: 0.82rem;
+}
+
+@media (max-width: 560px) {
+  .two-col-form {
+    grid-template-columns: 1fr;
+  }
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}

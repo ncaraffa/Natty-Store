@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/admin-auth";
+import { AdminShell } from "@/components/admin-shell";
 import { replyToConversation, setConversationStatus } from "../actions";
 import { ChatAutoRefresh } from "@/components/chat-auto-refresh";
 
@@ -56,76 +57,70 @@ export default async function AdminChatConversation({
   const status = conversationResult.data?.status ?? "open";
 
   return (
-    <section>
-      <ChatAutoRefresh />
-      <div className="admin-toolbar">
-        <div>
-          <span className="eyebrow">CHAT</span>
-          <h1>{customerInfo?.roblox_nick ?? "Cliente"}</h1>
-          <p>
-            {customerInfo?.contact} · {status === "closed" ? "Encerrada" : "Aberta"}
-          </p>
-        </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          <form action={setConversationStatus}>
-            <input type="hidden" name="conversation_id" value={id} />
-            <input type="hidden" name="status" value={status === "closed" ? "open" : "closed"} />
-            <button type="submit" className="button ghost">
-              {status === "closed" ? "Reabrir conversa" : "Encerrar conversa"}
-            </button>
-          </form>
-          <Link href="/admin/chat" className="button ghost">
-            Voltar
-          </Link>
-        </div>
-      </div>
-
-      <div className="panel" style={{ maxHeight: 480, overflowY: "auto" }}>
-        {messages.length === 0 ? (
-          <div className="empty">Nenhuma mensagem ainda.</div>
-        ) : (
-          <div className="list">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className="cart-line"
-                style={{
-                  flexDirection: "column",
-                  alignItems: message.sender_role === "admin" ? "flex-end" : "flex-start",
-                  background: message.sender_role === "admin" ? "#f0e9fa" : "#fff",
-                }}
-              >
-                <strong style={{ fontSize: 12 }}>
-                  {message.sender_role === "admin" ? "Natty Store" : customerInfo?.roblox_nick ?? "Cliente"} ·{" "}
-                  {formatDate(message.created_at)}
-                </strong>
-                {message.body && <p>{message.body}</p>}
-                {message.image_url && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={message.image_url}
-                    alt="Imagem enviada no chat"
-                    style={{ maxWidth: 240, borderRadius: 8, marginTop: 6 }}
-                  />
-                )}
-              </div>
-            ))}
+    <AdminShell activeKey="chat">
+      <section>
+        <ChatAutoRefresh />
+        <div className="admin-toolbar">
+          <div>
+            <span className="eyebrow">CHAT</span>
+            <h1>{customerInfo?.roblox_nick ?? "Cliente"}</h1>
+            <p className="admin-entity-meta">
+              {customerInfo?.contact} ·{" "}
+              <span className={`badge ${status === "closed" ? "badge-neutral" : "badge-success"}`}>
+                {status === "closed" ? "Encerrada" : "Aberta"}
+              </span>
+            </p>
           </div>
-        )}
-      </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <form action={setConversationStatus}>
+              <input type="hidden" name="conversation_id" value={id} />
+              <input type="hidden" name="status" value={status === "closed" ? "open" : "closed"} />
+              <button type="submit" className="button ghost">
+                {status === "closed" ? "Reabrir conversa" : "Encerrar conversa"}
+              </button>
+            </form>
+            <Link href="/admin/chat" className="button ghost">
+              Voltar
+            </Link>
+          </div>
+        </div>
 
-      <form action={replyToConversation} encType="multipart/form-data">
-        <input type="hidden" name="conversation_id" value={id} />
-        <label>
-          Resposta
-          <textarea name="body" rows={3} maxLength={4000} placeholder="Responder ao cliente..." />
-        </label>
-        <label>
-          Imagem (opcional)
-          <input name="image" type="file" accept="image/*" />
-        </label>
-        <button>Enviar</button>
-      </form>
-    </section>
+        <div className="panel admin-conversation-panel">
+          {messages.length === 0 ? (
+            <div className="empty">Nenhuma mensagem ainda.</div>
+          ) : (
+            <div className="admin-chat-thread">
+              {messages.map((message) => (
+                <div key={message.id} className={`admin-chat-bubble-row${message.sender_role === "admin" ? " is-admin" : ""}`}>
+                  <div className="admin-chat-bubble">
+                    <strong className="admin-chat-bubble-meta">
+                      {message.sender_role === "admin" ? "Natty Store" : customerInfo?.roblox_nick ?? "Cliente"} ·{" "}
+                      {formatDate(message.created_at)}
+                    </strong>
+                    {message.body && <p>{message.body}</p>}
+                    {message.image_url && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={message.image_url} alt="Imagem enviada no chat" />
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <form action={replyToConversation} encType="multipart/form-data" className="admin-chat-composer">
+          <label>
+            Resposta
+            <textarea name="body" rows={3} maxLength={4000} placeholder="Responder ao cliente..." />
+          </label>
+          <label>
+            Imagem (opcional)
+            <input name="image" type="file" accept="image/*" />
+          </label>
+          <button>Enviar</button>
+        </form>
+      </section>
+    </AdminShell>
   );
 }

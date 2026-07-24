@@ -30,32 +30,32 @@ export async function Banners() {
   if (!banners.length) return null;
 
   return (
-    <div className="list" style={{ marginBottom: 32 }}>
+    <div className="banner-strip">
       {banners.map((banner) => {
-        const content = (
-          <article className={`notice banner-${banner.kind}`} key={banner.id} style={{ display: "flex", gap: 14, alignItems: "center" }}>
+        const body = (
+          <>
             {banner.image_url && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={banner.image_url}
-                alt=""
-                style={{ width: 72, height: 72, objectFit: "cover", borderRadius: 12, flexShrink: 0 }}
-              />
+              <img className="banner-card__image" src={banner.image_url} alt="" />
             )}
-            <div>
+            <div className="banner-card__body">
               <span className="badge">{kindLabels[banner.kind]}</span>
-              <strong style={{ display: "block", marginTop: 6 }}>{banner.title}</strong>
-              {banner.message && <p style={{ margin: "4px 0 0" }}>{banner.message}</p>}
+              <strong>{banner.title}</strong>
+              {banner.message && <p>{banner.message}</p>}
             </div>
-          </article>
+          </>
         );
 
+        const className = `banner-card kind-${banner.kind}`;
+
         return banner.link_url ? (
-          <a key={banner.id} href={banner.link_url} style={{ display: "block" }}>
-            {content}
+          <a key={banner.id} href={banner.link_url} className={className}>
+            {body}
           </a>
         ) : (
-          content
+          <article key={banner.id} className={className}>
+            {body}
+          </article>
         );
       })}
     </div>

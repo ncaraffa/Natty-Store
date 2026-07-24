@@ -39,6 +39,32 @@ const paymentLabels: Record<string, string> = {
   refunded: "Pagamento reembolsado",
 };
 
+const orderStatusTone: Record<string, string> = {
+  paid: "is-positive",
+  delivering: "is-positive",
+  completed: "is-positive",
+  pending_payment: "is-attention",
+  stock_reserved: "is-attention",
+  draft: "is-attention",
+  cancelled: "is-negative",
+  refunded: "is-negative",
+  expired: "is-negative",
+};
+
+function OrderIcon() {
+  return (
+    <svg className="empty-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M4 7h16l-1.5 12.2a1.5 1.5 0 0 1-1.5 1.3H7a1.5 1.5 0 0 1-1.5-1.3L4 7z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+      <path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  );
+}
+
 function formatDate(value: string) {
   const date = new Date(value);
 
@@ -101,20 +127,20 @@ export default async function Account() {
 
   return (
     <section>
-      <span className="eyebrow">ÁREA DO CLIENTE</span>
+      <span className="eyebrow">Área do cliente</span>
       <h1>Minha conta</h1>
 
       <div className="two">
-        <article className="panel">
+        <article className="panel account-card">
           {authData.user ? (
             <>
               <h2>Acesso confirmado</h2>
-              <p>{authData.user.email}</p>
+              <span className="account-user-email">{authData.user.email}</span>
               <p>
                 Esta conta mostra somente pedidos vinculados ao seu usuário
                 autenticado.
               </p>
-              <div style={{ display: "flex", gap: 8 }}>
+              <div className="account-actions">
                 <SignOutButton />
                 <SwitchAccountButton />
               </div>
@@ -134,7 +160,11 @@ export default async function Account() {
               Não foi possível carregar os pedidos agora.
             </div>
           ) : !orders.length ? (
-            <div className="empty">Nenhum pedido encontrado para esta conta.</div>
+            <div className="empty">
+              <OrderIcon />
+              <h2>Nenhum pedido encontrado</h2>
+              <p>Seus pedidos aparecerão aqui assim que forem criados.</p>
+            </div>
           ) : (
             <div className="list">
               {orders.map((order) => {
@@ -143,26 +173,34 @@ export default async function Account() {
                 );
 
                 return (
-                  <article className="cart-line" key={order.id}>
-                    <div>
-                      <h3>{orderLabels[order.status] ?? order.status}</h3>
-                      <p>{formatDate(order.created_at)}</p>
-                      <p>
-                        {paymentLabels[order.payment_status] ??
-                          order.payment_status}
-                      </p>
-
-                      {orderItems.map((item) => (
-                        <p
-                          key={`${order.id}-${item.product_name_snapshot}`}
-                        >
-                          {item.quantity}× {item.product_name_snapshot} —{" "}
-                          {money(item.unit_price_cents * item.quantity)}
-                        </p>
-                      ))}
+                  <article className="cart-line order-card" key={order.id}>
+                    <div className="order-card__head">
+                      <div>
+                        <h3>{orderLabels[order.status] ?? order.status}</h3>
+                        <span className="order-card__meta">{formatDate(order.created_at)}</span>
+                      </div>
+                      <strong className="order-card__total price">{money(order.total_cents)}</strong>
                     </div>
 
-                    <strong>{money(order.total_cents)}</strong>
+                    <div className="row">
+                      <span className={`order-status ${orderStatusTone[order.status] ?? ""}`}>
+                        {orderLabels[order.status] ?? order.status}
+                      </span>
+                      <span className="order-card__meta">
+                        {paymentLabels[order.payment_status] ?? order.payment_status}
+                      </span>
+                    </div>
+
+                    {orderItems.length > 0 && (
+                      <div className="order-card__items">
+                        {orderItems.map((item) => (
+                          <p key={`${order.id}-${item.product_name_snapshot}`}>
+                            {item.quantity}× {item.product_name_snapshot} —{" "}
+                            {money(item.unit_price_cents * item.quantity)}
+                          </p>
+                        ))}
+                      </div>
+                    )}
                   </article>
                 );
               })}
