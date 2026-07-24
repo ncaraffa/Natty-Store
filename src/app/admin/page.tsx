@@ -20,6 +20,7 @@ export default async function Admin() {
         <article className="panel"><h2>Banners</h2><p>Promoções, novidades, avisos e eventos.</p><Link href="/admin/banners">Gerenciar banners</Link></article>
         <article className="panel"><h2>Cupons</h2><p>Cupons de desconto por percentual ou valor fixo.</p><Link href="/admin/cupons">Gerenciar cupons</Link></article>
         <article className="panel"><h2>Estatísticas</h2><p>Vendas, pedidos e produtos mais vendidos.</p><Link href="/admin/estatisticas">Ver estatísticas</Link></article>
+        <article className="panel"><h2>Chat</h2><p>Converse com clientes, entregue itens e dê suporte.</p><Link href="/admin/chat">Abrir conversas</Link></article>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
+import Link from "next/link";
 import { useCart } from "@/components/cart-provider";
 
 type PixInfo = {
@@ -108,6 +109,10 @@ export default function Checkout() {
               {message}
             </div>
           )}
+          <p>
+            Depois de pagar, acompanhe a entrega e tire dúvidas no{" "}
+            <Link href="/chat">chat com a loja</Link>.
+          </p>
         </div>
       ) : (
         <form onSubmit={submit}>
