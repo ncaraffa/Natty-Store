@@ -256,11 +256,17 @@
     gap: 8px;
   }
 
-  .mobile-menu-sheet .actions-stack a {
+  .mobile-menu-sheet .actions-stack a:not(.pill) {
     padding: 12px;
     border-radius: var(--radius-sm);
     font-weight: 700;
+    color: var(--color-text);
     background: var(--color-surface-muted);
+  }
+
+  .mobile-menu-sheet .actions-stack a.pill {
+    justify-content: center;
+    padding: 12px;
   }
 }
 
