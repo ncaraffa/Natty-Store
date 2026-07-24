@@ -59,11 +59,15 @@ function CheckIcon() {
 export default function CheckoutForm() {
   const { lines, ready, pendingOrder, setPendingOrder, clearPendingOrder } = useCart();
   const searchParams = useSearchParams();
+  const orderIdFromUrl = searchParams.get("order");
   const attemptId = useRef<string | null>(null);
   const resumeChecked = useRef<string | null>(null);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
-  const [resuming, setResuming] = useState(false);
+  // Se veio de um link "Voltar para pagamento" (?order=), já entra em
+  // modo "carregando" no primeiro render — evita qualquer flash do
+  // formulário da etapa 2 antes do Pix ser recuperado.
+  const [resuming, setResuming] = useState(() => Boolean(orderIdFromUrl));
   const [pix, setPix] = useState<PixInfo | null>(null);
   const [pixTotalCents, setPixTotalCents] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
@@ -83,12 +87,14 @@ export default function CheckoutForm() {
   }, []);
 
   // Retoma o Pix de um pedido em aberto: via link "Voltar para pagamento"
-  // (?order=) vindo de Minhas compras, ou automaticamente se este mesmo
-  // navegador tiver deixado um pedido pendente ao sair do checkout.
+  // (?order=) vindo de Minhas compras — não depende do carrinho estar
+  // pronto, pois o id já vem explícito na URL — ou, na ausência de um
+  // ?order=, automaticamente se este navegador tiver deixado um pedido
+  // pendente salvo ao sair do checkout.
   useEffect(() => {
-    if (!ready || pix) return;
+    if (pix) return;
 
-    const targetOrderId = searchParams.get("order") || pendingOrder?.orderId || null;
+    const targetOrderId = orderIdFromUrl || (ready ? pendingOrder?.orderId ?? null : null);
     if (!targetOrderId || resumeChecked.current === targetOrderId) return;
 
     resumeChecked.current = targetOrderId;
@@ -113,7 +119,7 @@ export default function CheckoutForm() {
         clearPendingOrder();
       })
       .finally(() => setResuming(false));
-  }, [ready, pix, searchParams, pendingOrder, setPendingOrder, clearPendingOrder]);
+  }, [pix, ready, orderIdFromUrl, pendingOrder, setPendingOrder, clearPendingOrder]);
 
   useEffect(() => {
     if (!pix || pixTotalCents !== null || !lines.length || !products.length) return;

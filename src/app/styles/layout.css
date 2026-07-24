@@ -366,6 +366,17 @@
   text-underline-offset: 2px;
 }
 
+.footer-contact-link:hover {
+  color: #f8eef9;
+}
+
+.footer-contact-link strong {
+  font-weight: 800;
+  color: #f8eef9;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 @media (max-width: 850px) {
   .site-footer-inner {
     grid-template-columns: 1fr 1fr;
