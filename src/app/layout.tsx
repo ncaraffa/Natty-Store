@@ -113,7 +113,9 @@ export default function RootLayout({
                   Nicolas Caraffa
                 </a>
               </span>
-              <Link href="/admin">Admin</Link>
+              <a href="https://www.tiktok.com/@storenatty" target="_blank" rel="noopener noreferrer">
+                Contato: @storenatty
+              </a>
             </div>
           </footer>
         </CartProvider>

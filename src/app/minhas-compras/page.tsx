@@ -159,6 +159,8 @@ export default async function MinhasCompras() {
           {orders.map((order) => {
             const orderItems = items.filter((item) => item.order_id === order.id);
             const tracking = trackingStatus(order);
+            const canResumePayment =
+              order.payment_status === "pending" || order.payment_status === "not_started";
 
             return (
               <article className="cart-line order-card" key={order.id}>
@@ -172,6 +174,11 @@ export default async function MinhasCompras() {
 
                 <div className="row">
                   <span className={`order-status ${tracking.tone}`}>{tracking.label}</span>
+                  {canResumePayment && (
+                    <Link className="button sm" href={`/checkout?order=${order.id}`}>
+                      Voltar para pagamento
+                    </Link>
+                  )}
                 </div>
 
                 {orderItems.length > 0 && (
