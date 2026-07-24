@@ -10,6 +10,7 @@ type BannerRow = {
   title: string;
   message: string;
   link_url: string | null;
+  image_url: string | null;
   active: boolean;
   starts_at: string | null;
   ends_at: string | null;
@@ -25,7 +26,7 @@ export default async function AdminBanners() {
 
   const { data, error } = await db
     .from("banners")
-    .select("id,kind,title,message,link_url,active,starts_at,ends_at")
+    .select("id,kind,title,message,link_url,image_url,active,starts_at,ends_at")
     .order("position", { ascending: true });
 
   const banners = (data ?? []) as BannerRow[];
@@ -46,7 +47,7 @@ export default async function AdminBanners() {
 
       <div className="panel">
         <h2>Novo banner</h2>
-        <form action={createBanner} className="admin-new-form">
+        <form action={createBanner} className="admin-new-form" encType="multipart/form-data">
           <label>
             Tipo
             <select name="kind" defaultValue="promo">
@@ -63,6 +64,14 @@ export default async function AdminBanners() {
           <label>
             Link (opcional)
             <input name="link_url" placeholder="/mm2" />
+          </label>
+          <label>
+            Imagem (arquivo, opcional)
+            <input name="image_file" type="file" accept="image/*" />
+          </label>
+          <label>
+            Imagem (URL, opcional se enviar arquivo)
+            <input name="image_url" placeholder="https://..." />
           </label>
           <label>
             Início (opcional)
@@ -86,7 +95,7 @@ export default async function AdminBanners() {
       <div className="list">
         {banners.map((banner) => (
           <div key={banner.id} className="cart-line" style={{ flexDirection: "column", alignItems: "stretch" }}>
-            <form action={updateBanner} className="admin-new-form">
+            <form action={updateBanner} className="admin-new-form" encType="multipart/form-data">
               <input type="hidden" name="id" value={banner.id} />
               <label>
                 Tipo
@@ -104,6 +113,22 @@ export default async function AdminBanners() {
               <label>
                 Link
                 <input name="link_url" defaultValue={banner.link_url ?? ""} />
+              </label>
+              <label>
+                {banner.image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={banner.image_url}
+                    alt=""
+                    style={{ width: 60, height: 40, objectFit: "cover", borderRadius: 4, display: "block", marginBottom: 4 }}
+                  />
+                )}
+                Imagem (arquivo)
+                <input name="image_file" type="file" accept="image/*" />
+              </label>
+              <label>
+                Imagem (URL)
+                <input name="image_url" defaultValue={banner.image_url ?? ""} placeholder="ou cole uma URL" />
               </label>
               <label>
                 Início
