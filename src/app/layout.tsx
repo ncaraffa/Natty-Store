@@ -37,6 +37,7 @@ const footerLinks = {
     ["Perguntas frequentes", "/faq"],
     ["Chat com a loja", "/chat"],
     ["Avaliações", "/avaliacoes"],
+    ["Minhas compras", "/minhas-compras"],
     ["Minha conta", "/conta"],
   ],
 };

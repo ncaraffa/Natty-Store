@@ -11,6 +11,7 @@ const links: [string, string][] = [
   ["FTF", "/ftf"],
   ["Adopt Me", "/adopt-me"],
   ["Encomendas", "/encomendas"],
+  ["Minhas compras", "/minhas-compras"],
   ["Avaliações", "/avaliacoes"],
   ["FAQ", "/faq"],
 ];

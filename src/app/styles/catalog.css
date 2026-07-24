@@ -30,6 +30,18 @@
   flex-wrap: wrap;
 }
 
+.logo-card-wrap {
+  transition: transform var(--transition-base);
+}
+
+.logo-card-wrap:hover {
+  transform: scale(1.045);
+}
+
+.logo-card-wrap:hover .logo-card {
+  box-shadow: var(--shadow-lg), 0 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
 .logo-card {
   position: relative;
   aspect-ratio: 1.05;
@@ -41,6 +53,17 @@
   border: 10px solid var(--color-surface-elevated);
   transform: rotate(2deg);
   animation: logo-float 6s ease-in-out infinite;
+  transition: box-shadow var(--transition-base);
+}
+
+.logo-card__img {
+  width: 70%;
+  height: auto;
+  /* Ajuste ótico: o desenho do wordmark tem mais "peso" visual à
+     esquerda ("Natty" ocupa quase toda a largura, "Store" fica mais
+     à direita embaixo), então um leve deslocamento para a direita
+     equilibra a percepção mesmo com a arte centralizada no arquivo. */
+  transform: translateX(4%);
 }
 
 @keyframes logo-float {

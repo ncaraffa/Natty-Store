@@ -130,15 +130,17 @@ export default function Home() {
         <div style={{ position: "relative" }}>
           <Sparkle style={{ top: "6%", right: "4%", animationDelay: "0.3s" }} />
           <Sparkle style={{ bottom: "10%", left: "-2%", width: 14, height: 14, animationDelay: "1.1s" }} />
-          <div className="logo-card">
-            <Image
-              src="/logo.png"
-              alt="Natty Store"
-              width={420}
-              height={420}
-              style={{ width: "70%", height: "auto" }}
-              priority
-            />
+          <div className="logo-card-wrap">
+            <div className="logo-card">
+              <Image
+                className="logo-card__img"
+                src="/logo.png"
+                alt="Natty Store"
+                width={420}
+                height={420}
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>
