@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/admin-auth";
 import { AdminShell } from "@/components/admin-shell";
-import { updateInventory } from "./actions";
+import { InventoryRowForm } from "./inventory-row-form";
 
 export const dynamic = "force-dynamic";
 
@@ -80,38 +80,7 @@ export default async function AdminInventory() {
                       </div>
                     </td>
                     <td colSpan={5} style={{ padding: 0 }}>
-                      <form
-                        action={updateInventory}
-                        style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", padding: "12px 14px" }}
-                      >
-                        <input type="hidden" name="product_id" value={row.product_id} />
-                        <label className="sr-only" htmlFor={`on_hand_${row.product_id}`}>
-                          Em mãos
-                        </label>
-                        <input
-                          id={`on_hand_${row.product_id}`}
-                          type="number"
-                          name="on_hand"
-                          min={0}
-                          defaultValue={row.on_hand}
-                          style={{ width: 76 }}
-                        />
-                        <span className="admin-stock-note">reservado: {row.reserved}</span>
-                        <select name="sell_policy" defaultValue={row.sell_policy} aria-label="Política de venda">
-                          <option value="in_stock">Em estoque</option>
-                          <option value="preorder">Pré-venda</option>
-                          <option value="backorder">Sob encomenda</option>
-                          <option value="disabled">Desativado</option>
-                        </select>
-                        <select name="public_status" defaultValue={row.public_status} aria-label="Status público">
-                          <option value="available">Disponível</option>
-                          <option value="limited">Limitado</option>
-                          <option value="unavailable">Indisponível</option>
-                          <option value="preorder">Pré-venda</option>
-                          <option value="backorder">Sob encomenda</option>
-                        </select>
-                        <button>Salvar</button>
-                      </form>
+                      <InventoryRowForm row={row} />
                     </td>
                   </tr>
                 );
