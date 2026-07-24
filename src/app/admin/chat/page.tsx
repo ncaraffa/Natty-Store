@@ -7,6 +7,7 @@ type ConversationRow = {
   id: string;
   last_message_at: string | null;
   unread_by_admin: boolean;
+  status: string;
   customer_id: string;
   customers: { roblox_nick: string; contact: string } | null;
 };
@@ -27,7 +28,7 @@ export default async function AdminChat() {
 
   const { data, error } = await db
     .from("conversations")
-    .select("id,last_message_at,unread_by_admin,customer_id,customers(roblox_nick,contact)")
+    .select("id,last_message_at,unread_by_admin,status,customer_id,customers(roblox_nick,contact)")
     .order("last_message_at", { ascending: false, nullsFirst: false });
 
   const conversations = (data ?? []) as unknown as ConversationRow[];
@@ -60,7 +61,10 @@ export default async function AdminChat() {
                 {conversation.customers?.contact} · {formatDate(conversation.last_message_at)}
               </div>
             </div>
-            {conversation.unread_by_admin && <span className="badge">Nova mensagem</span>}
+            <div style={{ display: "flex", gap: 6 }}>
+              {conversation.unread_by_admin && <span className="badge">Nova mensagem</span>}
+              {conversation.status === "closed" && <span className="badge">Encerrada</span>}
+            </div>
           </Link>
         ))}
         {conversations.length === 0 && !error && <div className="empty">Nenhuma conversa ainda.</div>}

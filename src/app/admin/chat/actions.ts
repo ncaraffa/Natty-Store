@@ -46,8 +46,25 @@ export async function replyToConversation(formData: FormData) {
       last_message_at: new Date().toISOString(),
       unread_by_customer: true,
       unread_by_admin: false,
+      status: "open",
     })
     .eq("id", conversationId);
+
+  revalidatePath("/admin/chat");
+  revalidatePath(`/admin/chat/${conversationId}`);
+}
+
+export async function setConversationStatus(formData: FormData) {
+  const { db } = await requireAdmin();
+
+  const conversationId = String(formData.get("conversation_id") ?? "");
+  const status = String(formData.get("status") ?? "");
+
+  if (!conversationId) throw new Error("Conversa inválida.");
+  if (status !== "open" && status !== "closed") throw new Error("Status inválido.");
+
+  const { error } = await db.from("conversations").update({ status }).eq("id", conversationId);
+  if (error) throw new Error(error.message);
 
   revalidatePath("/admin/chat");
   revalidatePath(`/admin/chat/${conversationId}`);

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/admin-auth";
-import { replyToConversation } from "../actions";
+import { replyToConversation, setConversationStatus } from "../actions";
 import { ChatAutoRefresh } from "@/components/chat-auto-refresh";
 
 export const dynamic = "force-dynamic";
@@ -34,7 +34,7 @@ export default async function AdminChatConversation({
   const [conversationResult, messagesResult] = await Promise.all([
     db
       .from("conversations")
-      .select("id,customers(roblox_nick,contact)")
+      .select("id,status,customers(roblox_nick,contact)")
       .eq("id", id)
       .single(),
     db
@@ -53,6 +53,7 @@ export default async function AdminChatConversation({
     | null;
   const customerInfo = Array.isArray(customer) ? customer[0] : customer;
   const messages = (messagesResult.data ?? []) as MessageRow[];
+  const status = conversationResult.data?.status ?? "open";
 
   return (
     <section>
@@ -61,11 +62,22 @@ export default async function AdminChatConversation({
         <div>
           <span className="eyebrow">CHAT</span>
           <h1>{customerInfo?.roblox_nick ?? "Cliente"}</h1>
-          <p>{customerInfo?.contact}</p>
+          <p>
+            {customerInfo?.contact} · {status === "closed" ? "Encerrada" : "Aberta"}
+          </p>
         </div>
-        <Link href="/admin/chat" className="button ghost">
-          Voltar
-        </Link>
+        <div style={{ display: "flex", gap: 8 }}>
+          <form action={setConversationStatus}>
+            <input type="hidden" name="conversation_id" value={id} />
+            <input type="hidden" name="status" value={status === "closed" ? "open" : "closed"} />
+            <button type="submit" className="button ghost">
+              {status === "closed" ? "Reabrir conversa" : "Encerrar conversa"}
+            </button>
+          </form>
+          <Link href="/admin/chat" className="button ghost">
+            Voltar
+          </Link>
+        </div>
       </div>
 
       <div className="panel" style={{ maxHeight: 480, overflowY: "auto" }}>

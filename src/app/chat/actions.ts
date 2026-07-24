@@ -104,7 +104,23 @@ export async function sendCustomerMessage(formData: FormData) {
       last_message_at: new Date().toISOString(),
       unread_by_admin: true,
       unread_by_customer: false,
+      status: "open",
     })
+    .eq("id", conversationId);
+
+  revalidatePath("/chat");
+}
+
+export async function closeConversationByCustomer(formData: FormData) {
+  const supabase = await serverSupabase();
+  if (!supabase) throw new Error("Chat indisponível no momento.");
+
+  const conversationId = String(formData.get("conversation_id") ?? "");
+  if (!conversationId) throw new Error("Conversa inválida.");
+
+  await supabase
+    .from("conversations")
+    .update({ status: "closed" })
     .eq("id", conversationId);
 
   revalidatePath("/chat");

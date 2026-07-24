@@ -1,5 +1,10 @@
 import { serverSupabase } from "@/lib/supabase/server";
-import { ensureConversation, sendCustomerMessage, markConversationReadByCustomer } from "./actions";
+import {
+  ensureConversation,
+  sendCustomerMessage,
+  markConversationReadByCustomer,
+  closeConversationByCustomer,
+} from "./actions";
 import { ChatAutoRefresh } from "@/components/chat-auto-refresh";
 
 export const dynamic = "force-dynamic";
@@ -41,14 +46,18 @@ export default async function Chat() {
   const conversationId = await ensureConversation();
   await markConversationReadByCustomer(conversationId);
 
-  const { data } = await supabase
-    .from("chat_messages")
-    .select("id,sender_role,body,image_url,created_at")
-    .eq("conversation_id", conversationId)
-    .order("created_at", { ascending: true })
-    .limit(200);
+  const [{ data }, { data: conversationData }] = await Promise.all([
+    supabase
+      .from("chat_messages")
+      .select("id,sender_role,body,image_url,created_at")
+      .eq("conversation_id", conversationId)
+      .order("created_at", { ascending: true })
+      .limit(200),
+    supabase.from("conversations").select("status").eq("id", conversationId).maybeSingle(),
+  ]);
 
   const messages = (data ?? []) as MessageRow[];
+  const isClosed = conversationData?.status === "closed";
 
   return (
     <section className="narrow">
@@ -56,6 +65,11 @@ export default async function Chat() {
       <span className="eyebrow">SUPORTE</span>
       <h1>Chat com a loja</h1>
       <p>Converse diretamente com a administradora sobre seu pedido, dúvidas ou suporte.</p>
+      {isClosed && (
+        <div className="notice">
+          Esta conversa foi encerrada. Envie uma nova mensagem a qualquer momento para reabrir.
+        </div>
+      )}
 
       <div className="panel" style={{ maxHeight: 480, overflowY: "auto" }}>
         {messages.length === 0 ? (
@@ -102,6 +116,15 @@ export default async function Chat() {
         </label>
         <button>Enviar</button>
       </form>
+
+      {!isClosed && (
+        <form action={closeConversationByCustomer} style={{ marginTop: 12 }}>
+          <input type="hidden" name="conversation_id" value={conversationId} />
+          <button type="submit" className="link-button">
+            Encerrar conversa
+          </button>
+        </form>
+      )}
     </section>
   );
 }
