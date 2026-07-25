@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "./cart-provider";
 
 const links: [string, string][] = [
@@ -64,6 +64,18 @@ export function Header() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cartBump, setCartBump] = useState(false);
+  const prevCount = useRef(count);
+
+  useEffect(() => {
+    if (count > prevCount.current) {
+      setCartBump(true);
+      const id = setTimeout(() => setCartBump(false), 420);
+      prevCount.current = count;
+      return () => clearTimeout(id);
+    }
+    prevCount.current = count;
+  }, [count]);
 
   useEffect(() => {
     let cancelled = false;
@@ -142,14 +154,17 @@ export function Header() {
       </nav>
 
       <div className="actions">
-        <Link href="/busca" aria-label="Buscar produtos">
+        <Link className="header-search" href="/busca" aria-label="Buscar produtos">
           <SearchIcon />
-          <span className="sr-only">Buscar</span>
+          <span>Buscar itens…</span>
         </Link>
         <Link href={isAdmin ? "/admin" : "/conta"}>{isAdmin ? "Painel admin" : "Minha conta"}</Link>
-        <Link className="pill" href="/carrinho" aria-label={`Carrinho com ${count} ${count === 1 ? "item" : "itens"}`}>
+        <Link className="pill cart-pill" href="/carrinho" aria-label={`Carrinho com ${count} ${count === 1 ? "item" : "itens"}`}>
           <CartIcon />
-          Carrinho {count > 0 && <span>({count})</span>}
+          <span className="cart-pill-label">Carrinho</span>
+          {count > 0 && (
+            <span className={`cart-pill-count${cartBump ? " is-bumping" : ""}`}>{count}</span>
+          )}
         </Link>
       </div>
 
@@ -161,7 +176,7 @@ export function Header() {
         onClick={() => setMenuOpen(true)}
       >
         <MenuIcon />
-        Menu
+        <span className="mobile-menu-toggle-label">Menu</span>
       </button>
       </header>
 

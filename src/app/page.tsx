@@ -125,9 +125,14 @@ export default function Home() {
               Fazer encomenda
             </Link>
           </div>
+          <ul className="hero-stat-row">
+            <li>Reserva automática de estoque</li>
+            <li>Pagamento via Pix</li>
+            <li>Suporte direto no chat</li>
+          </ul>
         </div>
 
-        <div style={{ position: "relative" }}>
+        <div className="hero-visual">
           <Sparkle style={{ top: "6%", right: "4%", animationDelay: "0.3s" }} />
           <Sparkle style={{ bottom: "10%", left: "-2%", width: 14, height: 14, animationDelay: "1.1s" }} />
           <div className="logo-card-wrap">
@@ -141,20 +146,26 @@ export default function Home() {
                 priority
               />
             </div>
+            <span className="hero-float-tag">Novidades toda semana</span>
           </div>
         </div>
       </section>
 
       <section aria-labelledby="games-heading">
-        <div className="section-head">
+        <div className="section-head" data-reveal>
           <div>
             <span className="eyebrow">Escolha seu jogo</span>
             <h2 id="games-heading">Navegue por categoria</h2>
           </div>
         </div>
-        <div className="game-nav-grid">
-          {games.map((game) => (
-            <Link key={game.href} href={game.href} className={`game-nav-card ${game.theme}`}>
+        <div className="game-nav-grid" data-reveal-group>
+          {games.map((game, index) => (
+            <Link
+              key={game.href}
+              href={game.href}
+              className={`game-nav-card ${game.theme}${index === 0 ? " game-nav-card--lg" : ""}`}
+              data-reveal
+            >
               <div className="game-nav-card__body">
                 <span className="eyebrow">{game.tag}</span>
                 <h3>{game.name}</h3>
@@ -169,7 +180,7 @@ export default function Home() {
       </section>
 
       <section id="catalogo">
-        <div className="section-head">
+        <div className="section-head" data-reveal>
           <div>
             <span className="eyebrow">Destaques</span>
             <h2>Explore a loja</h2>
@@ -180,7 +191,7 @@ export default function Home() {
       </section>
 
       <section aria-labelledby="custom-order-heading">
-        <div className="custom-order-banner">
+        <div className="custom-order-banner" data-reveal>
           <div>
             <span className="eyebrow">Não achou o que queria?</span>
             <h2 id="custom-order-heading">Peça uma encomenda personalizada</h2>
@@ -204,23 +215,29 @@ export default function Home() {
         <h2 className="sr-only" id="trust-heading">
           Por que comprar na Natty Store
         </h2>
-        <div className="trust-strip">
-          <div className="trust-item">
-            <ShieldIcon />
+        <div className="trust-strip" data-reveal-group>
+          <div className="trust-item" data-reveal>
+            <span className="trust-icon">
+              <ShieldIcon />
+            </span>
             <div>
               <h3>Estoque reservado com segurança</h3>
               <p>Seus itens ficam reservados automaticamente durante o pagamento.</p>
             </div>
           </div>
-          <div className="trust-item">
-            <PixIcon />
+          <div className="trust-item" data-reveal>
+            <span className="trust-icon">
+              <PixIcon />
+            </span>
             <div>
               <h3>Pagamento via Pix</h3>
               <p>Processado pelo Mercado Pago, com confirmação automática.</p>
             </div>
           </div>
-          <div className="trust-item">
-            <ChatBubbleIcon />
+          <div className="trust-item" data-reveal>
+            <span className="trust-icon">
+              <ChatBubbleIcon />
+            </span>
             <div>
               <h3>Suporte direto no chat</h3>
               <p>Fale com a administradora sempre que precisar de ajuda.</p>

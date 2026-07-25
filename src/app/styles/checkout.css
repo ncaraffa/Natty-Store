@@ -81,10 +81,16 @@
 .qty-stepper {
   display: inline-flex;
   align-items: center;
-  border: 1.5px solid var(--color-border-strong);
+  border: 2px solid var(--color-border-strong);
   border-radius: var(--radius-pill);
   overflow: hidden;
   background: var(--color-surface-elevated);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.qty-stepper:focus-within {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
 }
 
 .qty-stepper input {
@@ -120,12 +126,17 @@
   font-size: 1rem;
   font-weight: 900;
   box-shadow: none;
+  transition: background var(--transition-fast), transform 100ms var(--ease-out);
 }
 
 .qty-stepper button:hover {
   background: var(--purple-100);
   transform: none;
   box-shadow: none;
+}
+
+.qty-stepper button:active {
+  transform: scale(0.9);
 }
 
 .line-subtotal {
@@ -224,7 +235,8 @@
   height: 220px;
   border-radius: var(--radius-sm);
   background: #fff;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+  border: 6px solid #fff;
 }
 
 .pix-amount {
@@ -234,7 +246,10 @@
 .pix-amount .value {
   font-family: var(--font-display);
   font-size: 2.1rem;
-  color: var(--color-brand-strong);
+  background: linear-gradient(120deg, var(--color-brand-strong), var(--color-brand-primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .pix-code-field {

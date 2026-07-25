@@ -182,7 +182,7 @@ export default async function Avaliacoes() {
         </article>
       </div>
 
-      <div className="section-head">
+      <div className="section-head" data-reveal>
         <div>
           <span className="eyebrow">Depoimentos</span>
           <h2>O que os clientes dizem</h2>
@@ -195,9 +195,9 @@ export default async function Avaliacoes() {
           <p>Seja a primeira pessoa a avaliar uma compra na Natty Store.</p>
         </div>
       ) : (
-        <div className="list">
+        <div className="list" data-reveal-group>
           {reviews.map((review) => (
-            <article className="cart-line review-card" key={review.id}>
+            <article className="cart-line review-card" data-reveal key={review.id}>
               <div>
                 <div className="review-card__head">
                   <Stars value={review.rating} />

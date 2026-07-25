@@ -1,0 +1,25 @@
+/* Movimento — reveal-on-scroll.
+   Elementos marcados com [data-reveal] entram com fade + leve subida
+   quando cruzam a viewport (ver src/components/scroll-reveal.tsx).
+   Dentro de um [data-reveal-group], cada filho ganha um atraso
+   crescente (--reveal-delay, definido via JS) para um efeito de
+   cascata em vez de tudo aparecer de uma vez. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 640ms var(--ease-out), transform 640ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal].in-view {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

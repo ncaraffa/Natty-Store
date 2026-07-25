@@ -9,7 +9,8 @@ form {
 label {
   display: block;
   font-weight: 800;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
   color: var(--color-text);
 }
 
@@ -18,15 +19,15 @@ textarea,
 select {
   display: block;
   width: 100%;
-  padding: 13px 14px;
-  border: 1.5px solid var(--color-border-strong);
-  border-radius: var(--radius-sm);
+  padding: 13px 16px;
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
   background: var(--color-surface-elevated);
-  margin-top: 7px;
+  margin-top: 8px;
   font: inherit;
   font-size: 1rem;
   color: var(--color-text);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
 }
 
 input::placeholder,
@@ -46,6 +47,7 @@ select:focus-visible {
   outline: none;
   border-color: var(--color-border-focus);
   box-shadow: var(--shadow-focus);
+  background: var(--color-surface-elevated);
 }
 
 input:disabled,
