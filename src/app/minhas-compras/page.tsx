@@ -155,7 +155,7 @@ export default async function MinhasCompras() {
           </Link>
         </div>
       ) : (
-        <div className="list">
+        <div className="list" data-reveal-group>
           {orders.map((order) => {
             const orderItems = items.filter((item) => item.order_id === order.id);
             const tracking = trackingStatus(order);
@@ -163,7 +163,7 @@ export default async function MinhasCompras() {
               order.payment_status === "pending" || order.payment_status === "not_started";
 
             return (
-              <article className="cart-line order-card" key={order.id}>
+              <article className="cart-line order-card" data-reveal key={order.id}>
                 <div className="order-card__head">
                   <div>
                     <h3>Pedido de {formatDate(order.created_at)}</h3>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { Product } from "@/types";
 import { badgeLabels } from "@/types";
@@ -20,13 +21,39 @@ function BoxIcon() {
   );
 }
 
+function CheckIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
+  const [justAdded, setJustAdded] = useState(false);
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const purchasable =
     product.stockStatus === "available" || product.stockStatus === "limited";
 
+  useEffect(() => {
+    return () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+    };
+  }, []);
+
+  function handleAdd() {
+    add(product.id);
+    setJustAdded(true);
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+    resetTimer.current = setTimeout(() => setJustAdded(false), 1100);
+  }
+
   return (
-    <article className={`card${product.badge ? ` card-accent-${product.badge}` : ""}`}>
+    <article
+      className={`card${product.badge ? ` card-accent-${product.badge}` : ""}`}
+      data-reveal
+    >
       {product.badge && (
         <span className={`badge badge-${product.badge}`}>{badgeLabels[product.badge]}</span>
       )}
@@ -57,11 +84,19 @@ export function ProductCard({ product }: { product: Product }) {
         </Link>
       ) : (
         <button
-          className="card-action"
+          className={`card-action${justAdded ? " is-added" : ""}`}
           disabled={!purchasable}
-          onClick={() => add(product.id)}
+          onClick={handleAdd}
         >
-          {purchasable ? "Adicionar ao carrinho" : "Indisponível"}
+          {justAdded ? (
+            <>
+              <CheckIcon /> Adicionado
+            </>
+          ) : purchasable ? (
+            "Adicionar ao carrinho"
+          ) : (
+            "Indisponível"
+          )}
         </button>
       )}
     </article>

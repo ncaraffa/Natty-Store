@@ -231,6 +231,50 @@ button:disabled,
   margin-top: auto;
 }
 
+/* Confirmação de "adicionado ao carrinho" — feedback imediato no
+   próprio botão (sem toast), com um pulso curto e não bloqueante. */
+.card-action.is-added {
+  background: linear-gradient(135deg, var(--color-success) 0%, #1f5b3c 100%);
+  box-shadow: 0 3px 0 #16412b, var(--shadow-inset-top);
+  animation: add-to-cart-pulse 380ms var(--ease-spring);
+}
+
+.card-action.is-added svg {
+  animation: add-to-cart-check 320ms var(--ease-spring) both;
+}
+
+@keyframes add-to-cart-pulse {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.035);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes add-to-cart-check {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-action.is-added {
+    animation: none;
+  }
+  .card-action.is-added svg {
+    animation: none;
+  }
+}
+
 .panel h2,
 .summary h2 {
   margin-top: 0;

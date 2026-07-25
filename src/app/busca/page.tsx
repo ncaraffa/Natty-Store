@@ -83,7 +83,7 @@ export default function Busca() {
               </p>
             </div>
           ) : (
-            <div className="grid">
+            <div className="grid" data-reveal-group>
               {results.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

@@ -126,12 +126,17 @@
   font-size: 1rem;
   font-weight: 900;
   box-shadow: none;
+  transition: background var(--transition-fast), transform 100ms var(--ease-out);
 }
 
 .qty-stepper button:hover {
   background: var(--purple-100);
   transform: none;
   box-shadow: none;
+}
+
+.qty-stepper button:active {
+  transform: scale(0.9);
 }
 
 .line-subtotal {

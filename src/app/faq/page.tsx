@@ -44,9 +44,9 @@ export default function Faq() {
       <span className="eyebrow">Ajuda</span>
       <h1>Perguntas frequentes</h1>
       <p>Tudo o que você precisa saber antes de comprar na Natty Store.</p>
-      <div className="accordion">
+      <div className="accordion" data-reveal-group>
         {faqItems.map((item, index) => (
-          <details className="accordion-item" key={item.question} open={index === 0}>
+          <details className="accordion-item" data-reveal key={item.question} open={index === 0}>
             <summary>
               {item.question}
               <PlusIcon />

@@ -60,18 +60,18 @@ export default function Orders() {
         análise e não garante disponibilidade, prazo ou preço.
       </p>
 
-      <div className="how-it-works">
-        <div className="how-step">
+      <div className="how-it-works" data-reveal-group>
+        <div className="how-step" data-reveal>
           <span className="how-step__index">1</span>
           <h3>Conte o que procura</h3>
           <p>Descreva o item, o jogo e seu contato preferido.</p>
         </div>
-        <div className="how-step">
+        <div className="how-step" data-reveal>
           <span className="how-step__index">2</span>
           <h3>Análise da loja</h3>
           <p>A administradora avalia disponibilidade e prazo.</p>
         </div>
-        <div className="how-step">
+        <div className="how-step" data-reveal>
           <span className="how-step__index">3</span>
           <h3>Retorno combinado</h3>
           <p>Você recebe uma resposta pelo contato informado.</p>

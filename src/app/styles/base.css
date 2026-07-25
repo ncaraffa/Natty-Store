@@ -89,6 +89,7 @@ h3 {
   font-weight: 700;
   color: var(--color-text);
   letter-spacing: -0.01em;
+  line-height: 1.22;
 }
 
 p {
@@ -161,7 +162,6 @@ section:last-child {
   gap: var(--space-4);
   flex-wrap: wrap;
   margin-bottom: var(--space-8);
-  animation: fade-up 600ms var(--ease-out) both;
 }
 
 @keyframes fade-up {

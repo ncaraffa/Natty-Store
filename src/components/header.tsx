@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "./cart-provider";
 
 const links: [string, string][] = [
@@ -64,6 +64,18 @@ export function Header() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cartBump, setCartBump] = useState(false);
+  const prevCount = useRef(count);
+
+  useEffect(() => {
+    if (count > prevCount.current) {
+      setCartBump(true);
+      const id = setTimeout(() => setCartBump(false), 420);
+      prevCount.current = count;
+      return () => clearTimeout(id);
+    }
+    prevCount.current = count;
+  }, [count]);
 
   useEffect(() => {
     let cancelled = false;
@@ -150,7 +162,9 @@ export function Header() {
         <Link className="pill cart-pill" href="/carrinho" aria-label={`Carrinho com ${count} ${count === 1 ? "item" : "itens"}`}>
           <CartIcon />
           <span className="cart-pill-label">Carrinho</span>
-          {count > 0 && <span className="cart-pill-count">{count}</span>}
+          {count > 0 && (
+            <span className={`cart-pill-count${cartBump ? " is-bumping" : ""}`}>{count}</span>
+          )}
         </Link>
       </div>
 

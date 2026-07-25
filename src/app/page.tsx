@@ -152,18 +152,19 @@ export default function Home() {
       </section>
 
       <section aria-labelledby="games-heading">
-        <div className="section-head">
+        <div className="section-head" data-reveal>
           <div>
             <span className="eyebrow">Escolha seu jogo</span>
             <h2 id="games-heading">Navegue por categoria</h2>
           </div>
         </div>
-        <div className="game-nav-grid">
+        <div className="game-nav-grid" data-reveal-group>
           {games.map((game, index) => (
             <Link
               key={game.href}
               href={game.href}
               className={`game-nav-card ${game.theme}${index === 0 ? " game-nav-card--lg" : ""}`}
+              data-reveal
             >
               <div className="game-nav-card__body">
                 <span className="eyebrow">{game.tag}</span>
@@ -179,7 +180,7 @@ export default function Home() {
       </section>
 
       <section id="catalogo">
-        <div className="section-head">
+        <div className="section-head" data-reveal>
           <div>
             <span className="eyebrow">Destaques</span>
             <h2>Explore a loja</h2>
@@ -190,7 +191,7 @@ export default function Home() {
       </section>
 
       <section aria-labelledby="custom-order-heading">
-        <div className="custom-order-banner">
+        <div className="custom-order-banner" data-reveal>
           <div>
             <span className="eyebrow">Não achou o que queria?</span>
             <h2 id="custom-order-heading">Peça uma encomenda personalizada</h2>
@@ -214,8 +215,8 @@ export default function Home() {
         <h2 className="sr-only" id="trust-heading">
           Por que comprar na Natty Store
         </h2>
-        <div className="trust-strip">
-          <div className="trust-item">
+        <div className="trust-strip" data-reveal-group>
+          <div className="trust-item" data-reveal>
             <span className="trust-icon">
               <ShieldIcon />
             </span>
@@ -224,7 +225,7 @@ export default function Home() {
               <p>Seus itens ficam reservados automaticamente durante o pagamento.</p>
             </div>
           </div>
-          <div className="trust-item">
+          <div className="trust-item" data-reveal>
             <span className="trust-icon">
               <PixIcon />
             </span>
@@ -233,7 +234,7 @@ export default function Home() {
               <p>Processado pelo Mercado Pago, com confirmação automática.</p>
             </div>
           </div>
-          <div className="trust-item">
+          <div className="trust-item" data-reveal>
             <span className="trust-icon">
               <ChatBubbleIcon />
             </span>

@@ -399,10 +399,6 @@
   animation: fade-up 600ms var(--ease-out) both;
 }
 
-.custom-order-banner {
-  animation: fade-up 600ms var(--ease-out) both;
-}
-
 .category-hero .eyebrow {
   color: #f0e3f8;
   background: rgba(255, 255, 255, 0.16);

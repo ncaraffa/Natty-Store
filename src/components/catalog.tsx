@@ -30,7 +30,7 @@ export async function Catalog({ category }: { category?: Category }) {
   }
 
   return (
-    <div className="grid">
+    <div className="grid" data-reveal-group>
       {items.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

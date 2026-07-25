@@ -5,6 +5,7 @@ import "./globals.css";
 import "./accessibility.css";
 import { CartProvider } from "@/components/cart-provider";
 import { Header } from "@/components/header";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 const baloo = Baloo_2({
   subsets: ["latin"],
@@ -51,6 +52,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${baloo.variable} ${inter.variable}`}>
       <body>
         <CartProvider>
+          <ScrollReveal />
           <a className="skip-link" href="#conteudo">
             Pular para o conteúdo
           </a>
