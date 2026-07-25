@@ -1,0 +1,627 @@
+/* "Como comprar" — mini product tour animado.
+   Simula visualmente o fluxo real da loja (produto → carrinho →
+   checkout Pix → confirmação) reaproveitando as classes visuais reais
+   (card, button, checkout-steps, pix-*) em vez de vídeo gravado. */
+.tour {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.tour-frame {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Barra de navegador falsa — assina visualmente "isto é a loja",
+   sem fingir ser uma gravação de tela real. */
+.tour-chrome {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 12px var(--space-5);
+  background: var(--color-surface-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tour-chrome-dots {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.tour-chrome-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+}
+
+.tour-url {
+  font-family: ui-monospace, SFMono-Regular, "Courier New", monospace;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tour-screen {
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-5);
+  background: linear-gradient(150deg, var(--purple-100) 0%, var(--pink-soft) 100%);
+  overflow: hidden;
+}
+
+.tour-scene-enter {
+  width: 100%;
+  animation: tour-fade-in 420ms var(--ease-out) both;
+}
+
+@keyframes tour-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tour-stage {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+/* Cursor simulado — o "ator" da demonstração. Sua posição é animada
+   via transition de left/top (definidos inline por cena/fase), então
+   o movimento fica suave sem depender de keyframes coordenados. */
+.tour-cursor {
+  position: absolute;
+  z-index: 5;
+  transform: translate(-30%, -20%);
+  transition: left 550ms var(--ease-spring), top 550ms var(--ease-spring);
+  color: var(--deep);
+  filter: drop-shadow(0 3px 6px rgba(77, 45, 113, 0.35));
+  pointer-events: none;
+}
+
+.tour-cursor svg {
+  display: block;
+  transition: transform 160ms var(--ease-spring);
+}
+
+.tour-cursor.is-clicking svg {
+  transform: scale(0.72);
+}
+
+.tour-cursor::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-brand-primary);
+  opacity: 0;
+  transform: scale(0.4);
+}
+
+.tour-cursor.is-clicking::after {
+  animation: tour-click-ripple 480ms var(--ease-out);
+}
+
+@keyframes tour-click-ripple {
+  from {
+    opacity: 0.45;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+/* Mini header replicado (marca + selo do carrinho) */
+.tour-mini-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.tour-mini-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-brand-strong);
+  font-size: 0.95rem;
+}
+
+.tour-mini-cart {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-surface-elevated);
+  color: var(--color-brand-strong);
+  box-shadow: var(--shadow-xs);
+}
+
+.tour-mini-cart.is-bumping {
+  animation: tour-cart-bump 420ms var(--ease-spring);
+}
+
+@keyframes tour-cart-bump {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.22);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.tour-mini-cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-pink);
+  color: var(--color-brand-strong);
+  font-size: 0.66rem;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+
+/* Cartão de produto em miniatura — mesma anatomia do .card real */
+.tour-mock-card {
+  position: relative;
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+.tour-mock-card h4 {
+  margin: 2px 0 0;
+  font-size: 1rem;
+}
+
+.tour-mock-image {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  background: linear-gradient(150deg, #f5eefb 0%, #fdeef6 100%);
+  display: grid;
+  place-items: center;
+  color: var(--color-brand-primary);
+  opacity: 0.75;
+  margin-bottom: var(--space-3);
+}
+
+.tour-mock-image svg {
+  width: 30px;
+  height: 30px;
+}
+
+.tour-mock-row {
+  margin: var(--space-2) 0 var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--color-border);
+}
+
+/* Botão falso — visual idêntico ao .button/.card-action reais, mas é
+   um <span> decorativo (o clique é encenado pelo cursor simulado). */
+.tour-mock-button {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  background: linear-gradient(135deg, var(--purple) 0%, var(--deep) 100%);
+  color: var(--color-text-on-brand);
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.88rem;
+  box-shadow: 0 3px 0 var(--deep-700);
+  transition: transform 160ms var(--ease-spring), box-shadow 160ms var(--ease-out), background 200ms var(--ease-out);
+}
+
+.tour-mock-button.ghost {
+  background: var(--color-surface-elevated);
+  color: var(--color-brand-strong);
+  border: 2px solid var(--color-border-strong);
+  box-shadow: 0 3px 0 var(--color-border-strong);
+}
+
+.tour-mock-button.is-added {
+  background: linear-gradient(135deg, var(--color-success) 0%, #1f5b3c 100%);
+  box-shadow: 0 3px 0 #16412b;
+  transform: translateY(1px) scale(0.99);
+}
+
+/* Cena "carrinho" */
+.tour-cart-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-4);
+}
+
+.tour-cart-line-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.tour-cart-line-main h4 {
+  margin: 0 0 2px;
+  font-size: 0.92rem;
+}
+
+.tour-qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  background: var(--color-surface-elevated);
+  flex-shrink: 0;
+}
+
+.tour-qty-btn {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  font-weight: 900;
+  color: var(--color-brand-strong);
+  background: var(--color-surface-muted);
+  transition: background 160ms var(--ease-out), transform 160ms var(--ease-spring);
+}
+
+.tour-qty-btn.is-pressed {
+  background: var(--purple-100);
+  transform: scale(0.88);
+}
+
+.tour-qty-value {
+  width: 28px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.tour-cart-summary {
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Cena "checkout" — reaproveita .checkout-steps e .pix-* reais em
+   escala menor, dentro do cartão de demonstração */
+.tour-stage--checkout {
+  max-width: 380px;
+}
+
+.tour-checkout-steps {
+  margin: 0 0 var(--space-4);
+  justify-content: center;
+}
+
+.tour-checkout-steps .checkout-step {
+  font-size: 0.72rem;
+  padding: 6px 10px 6px 8px;
+}
+
+.tour-pix-frame {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: center;
+  background: var(--color-surface-elevated);
+  border: 1.5px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.tour-qr {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  border: 6px solid #fff;
+  box-shadow: var(--shadow-md);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 6px;
+  padding: 8px;
+}
+
+.tour-qr span {
+  background: var(--deep);
+  border-radius: 3px;
+}
+
+.tour-qr span:nth-child(2) {
+  background: var(--purple);
+}
+
+.tour-qr span:nth-child(3) {
+  background: var(--purple);
+}
+
+.tour-pix-frame .pix-amount .value {
+  font-size: 1.5rem;
+}
+
+.tour-pix-frame .pix-copy-button {
+  position: static;
+  padding: 8px 16px;
+}
+
+.tour-pix-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-warning);
+}
+
+.tour-pix-status.is-confirmed {
+  color: var(--color-success);
+}
+
+.tour-pix-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.tour-pix-status:not(.is-confirmed) .tour-pix-status-dot {
+  animation: tour-pulse-dot 1.1s ease-in-out infinite;
+}
+
+@keyframes tour-pulse-dot {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* Cena "sucesso" */
+.tour-stage--success {
+  text-align: center;
+  padding: var(--space-4) 0;
+}
+
+.tour-success-badge {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--space-3);
+  border-radius: 50%;
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--color-success-border);
+}
+
+.tour-stage--success.is-animated .tour-success-badge {
+  animation: tour-success-pop 480ms var(--ease-spring) both;
+}
+
+@keyframes tour-success-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tour-stage--success h4 {
+  margin: 0 0 4px;
+}
+
+.tour-stage--success p {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  margin: 0 0 var(--space-4);
+}
+
+.tour-stage--success .tour-mock-button {
+  width: auto;
+  display: inline-flex;
+  margin: 0 auto;
+}
+
+.tour-sparkle {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  color: var(--color-accent-pink);
+  opacity: 0.85;
+  animation: sparkle-twinkle 2.6s ease-in-out infinite;
+}
+
+.tour-sparkle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+}
+
+/* Player — barra inferior estilo controle de vídeo */
+.tour-player {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.tour-play {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.tour-track-list {
+  flex: 1;
+  display: flex;
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.tour-track-list li {
+  flex: 1;
+  min-width: 0;
+}
+
+.tour-track {
+  width: 100%;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  color: var(--color-text-muted);
+  text-align: left;
+}
+
+.tour-track:hover {
+  background: none;
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+.tour-track-bar {
+  display: block;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-strong);
+  overflow: hidden;
+}
+
+.tour-track-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand-primary);
+  animation-name: tour-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.tour-track-fill.is-complete {
+  width: 100%;
+  animation: none;
+}
+
+@keyframes tour-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.tour-track-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.tour-track.is-active .tour-track-label {
+  color: var(--color-brand-strong);
+}
+
+@media (max-width: 720px) {
+  .tour-track-label {
+    display: none;
+  }
+  .tour-screen {
+    min-height: 380px;
+    padding: var(--space-6) var(--space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-scene-enter,
+  .tour-mini-cart.is-bumping,
+  .tour-stage--success .tour-success-badge,
+  .tour-sparkle,
+  .tour-pix-status-dot,
+  .tour-track-fill {
+    animation: none !important;
+  }
+  .tour-cursor {
+    display: none;
+  }
+  .tour-track-fill {
+    width: 0%;
+  }
+  .tour-track.is-active .tour-track-fill {
+    width: 100%;
+    background: var(--color-border-strong);
+  }
+}

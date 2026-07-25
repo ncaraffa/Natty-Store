@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Catalog } from "@/components/catalog";
 import { Banners } from "@/components/banners";
+import { HowToBuyDemo } from "@/components/how-to-buy-demo";
 
 function ArrowIcon() {
   return (
@@ -178,6 +179,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <HowToBuyDemo />
 
       <section id="catalogo">
         <div className="section-head" data-reveal>
