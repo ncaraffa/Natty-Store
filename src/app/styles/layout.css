@@ -422,6 +422,16 @@
 /* Telas bem estreitas — cabeçalho fica só com ícones para nunca
    estourar a largura (marca + carrinho + menu sempre visíveis). */
 @media (max-width: 420px) {
+  .header .brand {
+    font-size: 1.15rem;
+    gap: 7px;
+  }
+
+  .header .brand-mark {
+    width: 34px;
+    height: 34px;
+  }
+
   .cart-pill-label,
   .mobile-menu-toggle-label {
     display: none;
@@ -433,10 +443,6 @@
 
   .mobile-menu-toggle {
     padding: 10px 12px;
-  }
-
-  .header .brand span {
-    display: none;
   }
 }
 
