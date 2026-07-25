@@ -15,8 +15,8 @@ button {
   font-weight: 800;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast), filter var(--transition-fast);
-  box-shadow: var(--shadow-xs);
+  transition: transform var(--transition-fast) var(--ease-spring), box-shadow var(--transition-base), opacity var(--transition-fast), filter var(--transition-fast);
+  box-shadow: var(--shadow-xs), var(--shadow-inset-top);
   min-height: 44px;
   text-align: center;
 }
@@ -24,14 +24,15 @@ button {
 .button:hover,
 button:hover {
   filter: brightness(1.05);
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-brand-glow), var(--shadow-inset-top);
+  transform: translateY(-2px);
 }
 
 .button:active,
 button:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
   filter: brightness(0.98);
+  box-shadow: var(--shadow-xs);
 }
 
 .button:focus-visible,
@@ -58,11 +59,17 @@ button:disabled,
 .button.ghost:hover {
   border-color: var(--color-brand-primary);
   background: var(--purple-50);
+  box-shadow: var(--shadow-xs);
 }
 
 .button.subtle {
   background: var(--purple-50);
   color: var(--color-brand-strong);
+  box-shadow: none;
+}
+
+.button.subtle:hover {
+  background: var(--purple-100);
   box-shadow: none;
 }
 
@@ -127,8 +134,8 @@ button:disabled,
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--purple-100);
   border-color: var(--color-border-strong);
 }
 
@@ -167,6 +174,24 @@ button:disabled,
   overflow: hidden;
   background: linear-gradient(150deg, var(--purple-100) 0%, var(--pink-soft) 100%);
   margin-bottom: var(--space-4);
+  isolation: isolate;
+}
+
+.product-image-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.5) 48%, transparent 62%);
+  transform: translateX(-60%);
+  transition: transform var(--transition-slow), opacity var(--transition-slow);
+  pointer-events: none;
+}
+
+.card:hover .product-image-frame::after {
+  opacity: 1;
+  transform: translateX(60%);
 }
 
 .product-image {
@@ -174,11 +199,11 @@ button:disabled,
   height: 100%;
   object-fit: contain;
   background: linear-gradient(150deg, #f5eefb 0%, #fdeef6 100%);
-  transition: transform var(--transition-base);
+  transition: transform var(--transition-slow);
 }
 
 .card:hover .product-image {
-  transform: scale(1.03);
+  transform: scale(1.045);
 }
 
 .mock-art {

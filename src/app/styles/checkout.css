@@ -85,6 +85,12 @@
   border-radius: var(--radius-pill);
   overflow: hidden;
   background: var(--color-surface-elevated);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.qty-stepper:focus-within {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
 }
 
 .qty-stepper input {
@@ -224,7 +230,8 @@
   height: 220px;
   border-radius: var(--radius-sm);
   background: #fff;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+  border: 6px solid #fff;
 }
 
 .pix-amount {
@@ -234,7 +241,10 @@
 .pix-amount .value {
   font-family: var(--font-display);
   font-size: 2.1rem;
-  color: var(--color-brand-strong);
+  background: linear-gradient(120deg, var(--color-brand-strong), var(--color-brand-primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .pix-code-field {

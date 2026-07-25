@@ -69,12 +69,14 @@
   --color-badge-featured-bg: #efe3ff;
   --color-badge-featured-fg: #5a2ea6;
 
-  /* Sombras */
+  /* Sombras — camadas (ambiente + contato) para sensação de profundidade real */
   --shadow-xs: 0 1px 2px rgba(61, 34, 88, 0.06);
-  --shadow-sm: 0 4px 14px rgba(77, 45, 113, 0.08);
-  --shadow-md: 0 14px 34px rgba(82, 52, 95, 0.12);
-  --shadow-lg: 0 30px 70px rgba(108, 68, 115, 0.18);
+  --shadow-sm: 0 2px 6px rgba(77, 45, 113, 0.05), 0 6px 16px rgba(77, 45, 113, 0.07);
+  --shadow-md: 0 4px 10px rgba(82, 52, 95, 0.06), 0 16px 36px rgba(82, 52, 95, 0.12);
+  --shadow-lg: 0 10px 20px rgba(108, 68, 115, 0.1), 0 32px 72px rgba(108, 68, 115, 0.18);
   --shadow-focus: 0 0 0 4px rgba(178, 78, 159, 0.22);
+  --shadow-brand-glow: 0 10px 28px rgba(121, 83, 166, 0.28);
+  --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.35);
 
   /* Raios */
   --radius-sm: 10px;
@@ -103,6 +105,7 @@
 
   /* Movimento */
   --ease-out: cubic-bezier(0.22, 0.7, 0.32, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --transition-fast: 130ms var(--ease-out);
   --transition-base: 220ms var(--ease-out);
   --transition-slow: 320ms var(--ease-out);

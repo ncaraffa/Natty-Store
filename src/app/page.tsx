@@ -206,21 +206,27 @@ export default function Home() {
         </h2>
         <div className="trust-strip">
           <div className="trust-item">
-            <ShieldIcon />
+            <span className="trust-icon">
+              <ShieldIcon />
+            </span>
             <div>
               <h3>Estoque reservado com segurança</h3>
               <p>Seus itens ficam reservados automaticamente durante o pagamento.</p>
             </div>
           </div>
           <div className="trust-item">
-            <PixIcon />
+            <span className="trust-icon">
+              <PixIcon />
+            </span>
             <div>
               <h3>Pagamento via Pix</h3>
               <p>Processado pelo Mercado Pago, com confirmação automática.</p>
             </div>
           </div>
           <div className="trust-item">
-            <ChatBubbleIcon />
+            <span className="trust-icon">
+              <ChatBubbleIcon />
+            </span>
             <div>
               <h3>Suporte direto no chat</h3>
               <p>Fale com a administradora sempre que precisar de ajuda.</p>

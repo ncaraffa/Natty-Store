@@ -61,6 +61,7 @@ h4 {
   line-height: 1.08;
   margin: 0 0 var(--space-3);
   letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 h1 {
@@ -69,7 +70,10 @@ h1 {
 
 h1 em {
   font-style: normal;
-  color: var(--color-brand-primary);
+  background: linear-gradient(120deg, var(--color-brand-primary) 0%, var(--deep) 60%, var(--color-accent-pink) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   position: relative;
 }
 
@@ -84,6 +88,7 @@ h3 {
 
 p {
   margin: 0 0 var(--space-3);
+  text-wrap: pretty;
 }
 
 .eyebrow {
