@@ -26,7 +26,7 @@ export function ProductCard({ product }: { product: Product }) {
     product.stockStatus === "available" || product.stockStatus === "limited";
 
   return (
-    <article className="card">
+    <article className={`card${product.badge ? ` card-accent-${product.badge}` : ""}`}>
       {product.badge && (
         <span className={`badge badge-${product.badge}`}>{badgeLabels[product.badge]}</span>
       )}
@@ -41,6 +41,7 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         )}
       </div>
+      <span className="card-eyebrow">{product.category}</span>
       <h3>{product.name}</h3>
       <p>{product.description}</p>
       <div className="row">

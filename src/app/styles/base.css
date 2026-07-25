@@ -29,7 +29,7 @@ body {
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.6;
   background:
     radial-gradient(1100px 520px at 8% -8%, var(--purple-50) 0%, transparent 60%),
     radial-gradient(900px 480px at 100% 0%, var(--pink-soft) 0%, transparent 55%),
@@ -57,15 +57,18 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
+  font-weight: 700;
   color: var(--color-brand-strong);
-  line-height: 1.08;
+  line-height: 1.04;
   margin: 0 0 var(--space-3);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
 h1 {
-  font-size: clamp(2.1rem, 1.55rem + 2.6vw, 3.6rem);
+  font-size: var(--text-5xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
 }
 
 h1 em {
@@ -78,12 +81,14 @@ h1 em {
 }
 
 h2 {
-  font-size: clamp(1.5rem, 1.3rem + 1vw, 2.05rem);
+  font-size: var(--text-3xl);
 }
 
 h3 {
-  font-size: 1.2rem;
+  font-size: var(--text-xl);
+  font-weight: 700;
   color: var(--color-text);
+  letter-spacing: -0.01em;
 }
 
 p {
@@ -95,12 +100,16 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
   font-weight: 800;
   color: var(--color-brand-primary);
   text-transform: uppercase;
   font-family: var(--font-body);
+  padding: 4px 12px 4px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--purple-50);
+  width: fit-content;
 }
 
 .eyebrow::before {
@@ -130,7 +139,7 @@ p {
 main {
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: var(--space-16) var(--space-6) var(--space-20);
+  padding: var(--space-20) var(--space-6) var(--space-24);
 }
 
 main:focus {
@@ -138,7 +147,7 @@ main:focus {
 }
 
 section {
-  margin-bottom: var(--space-16);
+  margin-bottom: var(--space-24);
 }
 
 section:last-child {

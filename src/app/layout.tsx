@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Fredoka, Nunito } from "next/font/google";
+import { Baloo_2, Inter } from "next/font/google";
 import "./globals.css";
 import "./accessibility.css";
 import { CartProvider } from "@/components/cart-provider";
 import { Header } from "@/components/header";
 
-const fredoka = Fredoka({
+const baloo = Baloo_2({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-fredoka",
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-baloo",
   display: "swap",
 });
 
-const nunito = Nunito({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800", "900"],
-  variable: "--font-nunito",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -48,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={`${fredoka.variable} ${nunito.variable}`}>
+    <html lang="pt-BR" className={`${baloo.variable} ${inter.variable}`}>
       <body>
         <CartProvider>
           <a className="skip-link" href="#conteudo">
@@ -59,6 +59,27 @@ export default function RootLayout({
             {children}
           </main>
           <footer className="site-footer">
+            <div className="footer-cta">
+              <div>
+                <span className="eyebrow">Fale com a gente</span>
+                <h2>Dúvidas antes de comprar?</h2>
+                <p>Suporte humano direto no chat ou pelo TikTok da loja.</p>
+              </div>
+              <div className="footer-cta-actions">
+                <Link className="button" href="/chat">
+                  Abrir chat
+                </Link>
+                <a
+                  className="button ghost"
+                  href="https://www.tiktok.com/@storenatty"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  @storenatty no TikTok
+                </a>
+              </div>
+            </div>
+
             <div className="site-footer-inner">
               <div className="footer-brand">
                 <span className="brand">
@@ -71,6 +92,11 @@ export default function RootLayout({
                   Itens digitais para MM2, Flee the Facility e Adopt Me, com
                   entrega combinada e suporte direto no chat.
                 </p>
+                <ul className="footer-trust-list">
+                  <li>Pagamento via Pix (Mercado Pago)</li>
+                  <li>Reserva automática de estoque</li>
+                  <li>Suporte humano pelo chat</li>
+                </ul>
               </div>
               <div className="footer-col">
                 <h3>Loja</h3>
@@ -92,14 +118,6 @@ export default function RootLayout({
                   ))}
                 </ul>
               </div>
-              <div className="footer-col">
-                <h3>Loja segura</h3>
-                <ul>
-                  <li>Pagamento via Pix (Mercado Pago)</li>
-                  <li>Reserva automática de estoque</li>
-                  <li>Suporte humano pelo chat</li>
-                </ul>
-              </div>
             </div>
             <div className="footer-bottom">
               <span>Natty Store — entrega e atendimento combinados com segurança.</span>
@@ -113,14 +131,6 @@ export default function RootLayout({
                   Nicolas Caraffa
                 </a>
               </span>
-              <a
-                className="footer-contact-link"
-                href="https://www.tiktok.com/@storenatty"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                TikTok para contato: <strong>@storenatty</strong>
-              </a>
             </div>
           </footer>
         </CartProvider>

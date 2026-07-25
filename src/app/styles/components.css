@@ -1,5 +1,7 @@
 /* Componentes visuais compartilhados: botões, cartões, selos, avisos */
 
+/* Botões — bloco "chunky" com borda de contato sólida (efeito de
+   botão físico de UI de jogo), em vez de sombra difusa só no hover. */
 .button,
 button {
   display: inline-flex;
@@ -8,15 +10,16 @@ button {
   gap: 0.5em;
   border: 0;
   border-radius: var(--radius-md);
-  padding: 13px 20px;
+  padding: 14px 22px;
   background: linear-gradient(135deg, var(--purple) 0%, var(--deep) 100%);
   color: var(--color-text-on-brand);
   font-family: var(--font-body);
   font-weight: 800;
   font-size: 0.95rem;
+  letter-spacing: -0.005em;
   cursor: pointer;
-  transition: transform var(--transition-fast) var(--ease-spring), box-shadow var(--transition-base), opacity var(--transition-fast), filter var(--transition-fast);
-  box-shadow: var(--shadow-xs), var(--shadow-inset-top);
+  transition: transform var(--transition-fast) var(--ease-spring), box-shadow var(--transition-fast), opacity var(--transition-fast), filter var(--transition-fast);
+  box-shadow: 0 3px 0 var(--deep-700), var(--shadow-inset-top);
   min-height: 44px;
   text-align: center;
 }
@@ -24,15 +27,15 @@ button {
 .button:hover,
 button:hover {
   filter: brightness(1.05);
-  box-shadow: var(--shadow-brand-glow), var(--shadow-inset-top);
+  box-shadow: 0 5px 0 var(--deep-700), var(--shadow-brand-glow), var(--shadow-inset-top);
   transform: translateY(-2px);
 }
 
 .button:active,
 button:active {
-  transform: translateY(0) scale(0.98);
+  transform: translateY(2px) scale(0.99);
   filter: brightness(0.98);
-  box-shadow: var(--shadow-xs);
+  box-shadow: 0 1px 0 var(--deep-700);
 }
 
 .button:focus-visible,
@@ -52,20 +55,25 @@ button:disabled,
 .button.ghost {
   background: var(--color-surface-elevated);
   color: var(--color-brand-strong);
-  border: 1.5px solid var(--color-border-strong);
-  box-shadow: none;
+  border: 2px solid var(--color-border-strong);
+  box-shadow: 0 3px 0 var(--color-border-strong);
 }
 
 .button.ghost:hover {
   border-color: var(--color-brand-primary);
   background: var(--purple-50);
-  box-shadow: var(--shadow-xs);
+  box-shadow: 0 3px 0 var(--purple-100);
+}
+
+.button.ghost:active {
+  box-shadow: 0 1px 0 var(--color-border-strong);
 }
 
 .button.subtle {
   background: var(--purple-50);
   color: var(--color-brand-strong);
   box-shadow: none;
+  border: 2px solid transparent;
 }
 
 .button.subtle:hover {
@@ -73,11 +81,24 @@ button:disabled,
   box-shadow: none;
 }
 
+.button.subtle:active {
+  transform: translateY(0) scale(0.99);
+}
+
 .button.sm {
   padding: 9px 14px;
   font-size: 0.85rem;
   min-height: 36px;
   border-radius: var(--radius-sm);
+  box-shadow: 0 2px 0 var(--deep-700);
+}
+
+.button.sm:active {
+  box-shadow: 0 0.5px 0 var(--deep-700);
+}
+
+.button.sm.ghost {
+  box-shadow: 0 2px 0 var(--color-border-strong);
 }
 
 .button.block {
@@ -104,13 +125,14 @@ button:disabled,
 .pill {
   background: var(--color-brand-strong);
   color: var(--color-text-on-brand);
-  padding: 10px 16px;
+  padding: 10px 18px;
   border-radius: var(--radius-pill);
   font-weight: 800;
   font-size: 0.85rem;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  box-shadow: 0 3px 0 var(--deep-700);
 }
 
 /* Cartões e superfícies */
@@ -122,15 +144,30 @@ button:disabled,
   background: var(--color-surface-elevated);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  padding: var(--space-6);
   box-shadow: var(--shadow-sm);
 }
 
+/* Cartão de produto — anatomia própria: imagem, corpo, rodapé fixo
+   com divisória, e um filete de cor no topo (identidade de "item de
+   loja", como uma carta de jogo, sem depender só de sombra/hover). */
 .card {
   position: relative;
   display: flex;
   flex-direction: column;
+  padding: var(--space-4) var(--space-4) var(--space-5);
+  overflow: hidden;
   transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--purple) 0%, var(--color-accent-pink) 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
 
 .card:hover {
@@ -139,10 +176,52 @@ button:disabled,
   border-color: var(--color-border-strong);
 }
 
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Filete de topo herda a cor do selo do produto, quando houver —
+   reforça a leitura de "raridade"/categoria sem novas cores de marca. */
+.card-accent-new::before {
+  background: var(--color-badge-new-fg);
+}
+.card-accent-promo::before {
+  background: var(--color-badge-promo-fg);
+}
+.card-accent-bestseller::before {
+  background: var(--color-badge-bestseller-fg);
+}
+.card-accent-featured::before {
+  background: var(--color-badge-featured-fg);
+}
+
+.card-eyebrow {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+  padding: 0 var(--space-1);
+  margin-top: var(--space-3);
+}
+
+.card h3 {
+  padding: 0 var(--space-1);
+  margin-top: 2px;
+}
+
 .card p {
   color: var(--color-text-muted);
   line-height: 1.5;
   font-size: 0.93rem;
+  padding: 0 var(--space-1);
+}
+
+.card .row {
+  margin: 0 var(--space-1) var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--color-border);
 }
 
 .card > button,
@@ -226,13 +305,14 @@ button:disabled,
   opacity: 0.6;
 }
 
-/* Selos de produto */
+/* Selos de produto — recorte em "etiqueta/tag" (em vez de pílula
+   lisa) para reforçar a linguagem de item colecionável da loja. */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 5px 12px;
-  border-radius: var(--radius-pill);
+  padding: 6px 13px 6px 17px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 9px 50%);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -244,9 +324,9 @@ button:disabled,
 .card > .badge {
   position: absolute;
   top: 14px;
-  left: 14px;
+  left: 10px;
   z-index: 1;
-  box-shadow: var(--shadow-xs);
+  box-shadow: var(--shadow-sm);
 }
 
 .badge-new {

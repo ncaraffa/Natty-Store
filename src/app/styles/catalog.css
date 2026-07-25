@@ -1,15 +1,15 @@
 /* Home — hero */
 .hero {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: var(--space-12);
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: var(--space-14);
   align-items: center;
   min-height: 480px;
   position: relative;
 }
 
 .hero-copy .eyebrow {
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
 .hero-copy {
@@ -28,6 +28,57 @@
   gap: 12px;
   margin-top: var(--space-6);
   flex-wrap: wrap;
+}
+
+/* Selos de confiança embaixo dos CTAs — reforça credibilidade de
+   marketplace já na primeira dobra, sem depender só do trust-strip
+   lá embaixo. */
+.hero-stat-row {
+  list-style: none;
+  margin: var(--space-8) 0 0;
+  padding: var(--space-5) 0 0;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.hero-stat-row li {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-stat-row li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-brand-primary);
+  flex-shrink: 0;
+}
+
+.hero-visual {
+  position: relative;
+}
+
+.hero-float-tag {
+  position: absolute;
+  bottom: 6%;
+  left: -6%;
+  background: var(--color-surface-elevated);
+  color: var(--color-brand-strong);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  animation: fade-up 700ms 200ms var(--ease-out) both;
 }
 
 .logo-card-wrap {
@@ -119,10 +170,13 @@
   }
 }
 
-/* Cards de navegação por jogo */
+/* Cards de navegação por jogo — bento assimétrico: o primeiro jogo
+   ganha destaque (carta maior), os outros dois dividem a coluna ao
+   lado, em vez de três colunas iguais. */
 .game-nav-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1.3fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
   gap: var(--space-5);
 }
 
@@ -138,6 +192,16 @@
   color: #fff;
   box-shadow: var(--shadow-md);
   transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.game-nav-card--lg {
+  grid-row: 1 / 3;
+  min-height: 100%;
+  padding: var(--space-8);
+}
+
+.game-nav-card--lg h3 {
+  font-size: var(--text-2xl);
 }
 
 .game-nav-card:hover {
@@ -177,6 +241,7 @@
 
 .game-nav-card__body .eyebrow {
   color: #f0e3f8;
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .game-nav-card__body .eyebrow::before {
@@ -254,14 +319,17 @@
   display: flex;
   gap: 16px;
   align-items: flex-start;
-  padding: var(--space-5);
+  padding: var(--space-6);
   border-radius: var(--radius-lg);
-  transition: background var(--transition-base), transform var(--transition-base);
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xs);
+  transition: background var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .trust-item:hover {
-  background: var(--color-surface-elevated);
   box-shadow: var(--shadow-sm);
+  border-color: var(--color-border-strong);
   transform: translateY(-3px);
 }
 
@@ -337,6 +405,7 @@
 
 .category-hero .eyebrow {
   color: #f0e3f8;
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .category-hero .eyebrow::before {
@@ -386,6 +455,12 @@
   }
   .game-nav-grid {
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  .game-nav-card--lg {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    min-height: 200px;
   }
   .custom-order-banner {
     grid-template-columns: 1fr;
@@ -406,8 +481,14 @@
   .game-nav-grid {
     grid-template-columns: 1fr;
   }
-  .logo-card {
+  .game-nav-card--lg {
+    grid-column: auto;
+  }
+  .hero-visual {
     display: none;
+  }
+  .hero-stat-row {
+    gap: var(--space-4);
   }
   h1,
   .narrow h1 {

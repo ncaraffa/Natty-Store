@@ -125,9 +125,14 @@ export default function Home() {
               Fazer encomenda
             </Link>
           </div>
+          <ul className="hero-stat-row">
+            <li>Reserva automática de estoque</li>
+            <li>Pagamento via Pix</li>
+            <li>Suporte direto no chat</li>
+          </ul>
         </div>
 
-        <div style={{ position: "relative" }}>
+        <div className="hero-visual">
           <Sparkle style={{ top: "6%", right: "4%", animationDelay: "0.3s" }} />
           <Sparkle style={{ bottom: "10%", left: "-2%", width: 14, height: 14, animationDelay: "1.1s" }} />
           <div className="logo-card-wrap">
@@ -141,6 +146,7 @@ export default function Home() {
                 priority
               />
             </div>
+            <span className="hero-float-tag">Novidades toda semana</span>
           </div>
         </div>
       </section>
@@ -153,8 +159,12 @@ export default function Home() {
           </div>
         </div>
         <div className="game-nav-grid">
-          {games.map((game) => (
-            <Link key={game.href} href={game.href} className={`game-nav-card ${game.theme}`}>
+          {games.map((game, index) => (
+            <Link
+              key={game.href}
+              href={game.href}
+              className={`game-nav-card ${game.theme}${index === 0 ? " game-nav-card--lg" : ""}`}
+            >
               <div className="game-nav-card__body">
                 <span className="eyebrow">{game.tag}</span>
                 <h3>{game.name}</h3>

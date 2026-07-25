@@ -85,7 +85,8 @@
   --radius-xl: 36px;
   --radius-pill: 999px;
 
-  /* Espaçamento */
+  /* Espaçamento — escala com passos maiores para dar mais respiro
+     entre seções e blocos de conteúdo (ritmo vertical mais generoso) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -95,13 +96,16 @@
   --space-8: 32px;
   --space-10: 40px;
   --space-12: 48px;
+  --space-14: 56px;
   --space-16: 64px;
   --space-20: 80px;
+  --space-24: 96px;
+  --space-28: 112px;
 
   /* Layout */
   --content-max: 1200px;
   --content-narrow: 700px;
-  --header-height: 76px;
+  --header-height: 84px;
 
   /* Movimento */
   --ease-out: cubic-bezier(0.22, 0.7, 0.32, 1);
@@ -110,9 +114,24 @@
   --transition-base: 220ms var(--ease-out);
   --transition-slow: 320ms var(--ease-out);
 
-  /* Tipografia */
-  --font-display: var(--font-fredoka), "Segoe UI", sans-serif;
-  --font-body: var(--font-nunito), "Segoe UI", sans-serif;
+  /* Tipografia — par "Baloo 2" (display, redondo e cheio de
+     personalidade para um bazar de itens de jogo) + "Inter" (texto,
+     neutro e nítido em telas densas de preço/estoque). */
+  --font-display: var(--font-baloo), "Segoe UI", sans-serif;
+  --font-body: var(--font-inter), "Segoe UI", sans-serif;
+
+  /* Escala tipográfica — passos maiores entre os níveis para uma
+     hierarquia com mais contraste (h1 bem grande, h3 e body mais
+     próximos entre si, mas com peso distinto). */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.3rem, 1.16rem + 0.6vw, 1.5rem);
+  --text-2xl: clamp(1.6rem, 1.35rem + 1.1vw, 2rem);
+  --text-3xl: clamp(2rem, 1.6rem + 1.7vw, 2.6rem);
+  --text-4xl: clamp(2.6rem, 1.9rem + 3vw, 4rem);
+  --text-5xl: clamp(3.2rem, 2.2rem + 4.2vw, 5rem);
 }
 
 @media (prefers-reduced-motion: reduce) {

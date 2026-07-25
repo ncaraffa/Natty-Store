@@ -81,7 +81,7 @@
 .qty-stepper {
   display: inline-flex;
   align-items: center;
-  border: 1.5px solid var(--color-border-strong);
+  border: 2px solid var(--color-border-strong);
   border-radius: var(--radius-pill);
   overflow: hidden;
   background: var(--color-surface-elevated);
