@@ -158,6 +158,7 @@ export default function CheckoutForm() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           attemptId: attemptId.current,
+          name: form.get("name"),
           robloxNick: form.get("robloxNick"),
           contact: form.get("contact"),
           items: lines,
@@ -327,6 +328,17 @@ export default function CheckoutForm() {
         </div>
       ) : (
         <form onSubmit={submit}>
+          <label className="field-required">
+            Nome
+            <input
+              name="name"
+              autoComplete="name"
+              required
+              minLength={1}
+              maxLength={120}
+            />
+          </label>
+
           <div className="two-col-form">
             <label className="field-required">
               Nick no Roblox

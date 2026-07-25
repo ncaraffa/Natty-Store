@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
 const schema = z
   .object({
     attemptId: z.string().uuid(),
+    name: z.string().trim().min(1).max(120),
     robloxNick: z.string().trim().min(3).max(80),
     contact: z.string().trim().min(5).max(200),
     items: z
@@ -117,7 +118,7 @@ export async function POST(request: Request) {
 
   if (!parsed.success) {
     return response(
-      { message: "Confira nick, contato e itens do carrinho." },
+      { message: "Confira nome, nick, contato e itens do carrinho." },
       400,
     );
   }
@@ -145,6 +146,7 @@ export async function POST(request: Request) {
     ),
     p_guest_roblox_nick: parsed.data.robloxNick,
     p_guest_contact: parsed.data.contact,
+    p_guest_name: parsed.data.name,
     p_items: parsed.data.items.map((item) => ({
       product_id: item.productId,
       quantity: item.quantity,
