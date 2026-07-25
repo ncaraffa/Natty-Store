@@ -6,6 +6,7 @@ const sections: { key: AdminKey; title: string; description: string; href: strin
   { key: "produtos", title: "Produtos", description: "Criar, editar e publicar catálogo.", href: "/admin/produtos", cta: "Gerenciar produtos" },
   { key: "estoque", title: "Inventário", description: "Quantidade interna e movimentações.", href: "/admin/estoque", cta: "Gerenciar estoque" },
   { key: "pedidos", title: "Pedidos", description: "Pagamento e entrega auditáveis.", href: "/admin/pedidos", cta: "Gerenciar pedidos" },
+  { key: "encomendas", title: "Encomendas", description: "Pedidos sob demanda enviados pelos clientes.", href: "/admin/encomendas", cta: "Gerenciar encomendas" },
   { key: "avaliacoes", title: "Avaliações", description: "Ver e responder avaliações de clientes.", href: "/admin/avaliacoes", cta: "Gerenciar avaliações" },
   { key: "banners", title: "Banners", description: "Promoções, novidades, avisos e eventos.", href: "/admin/banners", cta: "Gerenciar banners" },
   { key: "cupons", title: "Cupons", description: "Cupons de desconto por percentual ou valor fixo.", href: "/admin/cupons", cta: "Gerenciar cupons" },

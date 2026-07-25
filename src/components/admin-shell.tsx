@@ -9,6 +9,7 @@ export type AdminKey =
   | "produtos"
   | "estoque"
   | "pedidos"
+  | "encomendas"
   | "cupons"
   | "banners"
   | "avaliacoes"
@@ -62,6 +63,12 @@ const ICONS: Record<AdminKey, ReactNode> = {
       <path d="M9 7h6" />
       <path d="M9 11h6" />
       <path d="M9 15h4" />
+    </IconWrap>
+  ),
+  encomendas: (
+    <IconWrap>
+      <path d="M12 2 3 6.5V12c0 5 3.8 8.6 9 10 5.2-1.4 9-5 9-10V6.5Z" />
+      <path d="m9 12 2 2 4-4" />
     </IconWrap>
   ),
   cupons: (
@@ -120,6 +127,7 @@ const navItems: { key: AdminKey; label: string; href: string }[] = [
   { key: "produtos", label: "Produtos", href: "/admin/produtos" },
   { key: "estoque", label: "Estoque", href: "/admin/estoque" },
   { key: "pedidos", label: "Pedidos", href: "/admin/pedidos" },
+  { key: "encomendas", label: "Encomendas", href: "/admin/encomendas" },
   { key: "cupons", label: "Cupons", href: "/admin/cupons" },
   { key: "banners", label: "Banners", href: "/admin/banners" },
   { key: "avaliacoes", label: "Avaliações", href: "/admin/avaliacoes" },

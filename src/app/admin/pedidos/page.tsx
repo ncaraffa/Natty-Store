@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 
 type OrderRow = {
   id: string;
+  guest_name?: string | null;
   guest_roblox_nick: string;
   guest_contact: string;
   status: string;
@@ -66,7 +67,7 @@ export default async function AdminOrders() {
   const { data, error } = await db
     .from("orders")
     .select(
-      "id,guest_roblox_nick,guest_contact,status,payment_status,total_cents,created_at,order_items(product_name_snapshot,quantity,unit_price_cents)",
+      "*,order_items(product_name_snapshot,quantity,unit_price_cents)",
     )
     .order("created_at", { ascending: false })
     .limit(200);
@@ -94,6 +95,7 @@ export default async function AdminOrders() {
               <div className="admin-entity-head">
                 <div>
                   <h3>{order.guest_roblox_nick}</h3>
+                  <div className="admin-entity-meta">Nome: {order.guest_name || "—"}</div>
                   <div className="admin-entity-meta">{order.guest_contact}</div>
                   <div className="admin-entity-meta">{new Date(order.created_at).toLocaleString("pt-BR")}</div>
                 </div>
