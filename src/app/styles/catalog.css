@@ -534,6 +534,44 @@
   animation: fade-up 600ms var(--ease-out) both;
 }
 
+.category-hero__aurora {
+  position: absolute;
+  inset: -30% -10%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.category-hero__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  will-change: transform;
+}
+
+.category-hero__blob--a {
+  top: -10%;
+  left: -6%;
+  width: 44%;
+  height: 160%;
+  background: rgba(255, 255, 255, 0.16);
+  animation: aurora-drift-a 20s ease-in-out infinite;
+}
+
+.category-hero__blob--b {
+  bottom: -30%;
+  right: 2%;
+  width: 38%;
+  height: 130%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: aurora-drift-b 24s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-hero__blob {
+    animation: none;
+  }
+}
+
 .category-hero .eyebrow {
   color: #f0e3f8;
   background: rgba(255, 255, 255, 0.16);

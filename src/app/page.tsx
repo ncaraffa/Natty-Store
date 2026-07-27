@@ -1,34 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import type { CSSProperties } from "react";
 import { Catalog } from "@/components/catalog";
 import { Banners } from "@/components/banners";
 import { HeroParallax } from "@/components/hero-parallax";
 import { MagneticLink } from "@/components/magnetic-link";
 import { TiltLink } from "@/components/tilt-link";
-
-/**
- * Cada palavra fica num invólucro com overflow escondido e sobe de
- * dentro do próprio espaço (ver .reveal-word em motion.css) — efeito
- * de entrada cinematográfico, roda uma vez no carregamento da home.
- */
-function RevealWords({ text, startAt = 0 }: { text: string; startAt?: number }) {
-  return (
-    <>
-      {text.split(" ").map((word, index) => (
-        <span className="reveal-word" key={`${word}-${index}`}>
-          <span
-            className="reveal-word__inner"
-            style={{ "--i": startAt + index } as CSSProperties}
-          >
-            {word}
-            {index < text.split(" ").length - 1 ? " " : ""}
-          </span>
-        </span>
-      ))}
-    </>
-  );
-}
+import { RevealWords } from "@/components/reveal-words";
 
 function ArrowIcon() {
   return (

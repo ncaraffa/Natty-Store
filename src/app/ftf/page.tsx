@@ -1,19 +1,15 @@
-import Link from "next/link";
 import { Catalog } from "@/components/catalog";
+import { CategoryHero } from "@/components/category-hero";
 
 export default function FTFPage() {
   return (
     <section>
-      <div className="category-hero theme-ftf">
-        <nav className="breadcrumb" aria-label="Trilha de navegação">
-          <Link href="/">Início</Link>
-          <span aria-hidden="true">/</span>
-          <span>FTF</span>
-        </nav>
-        <span className="eyebrow">Catálogo</span>
-        <h1>Flee the Facility</h1>
-        <p>Sets e marretas para escapar com estilo.</p>
-      </div>
+      <CategoryHero
+        theme="ftf"
+        breadcrumb="FTF"
+        title="Flee the Facility"
+        description="Sets e marretas para escapar com estilo."
+      />
       <Catalog category="ftf" />
     </section>
   );
