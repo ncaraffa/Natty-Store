@@ -90,8 +90,12 @@ export default function Cart() {
       ) : (
         <div className="checkout-layout">
           <div className="list">
-            {detailed.map((item) => (
-              <article className="cart-line" key={item.productId}>
+            {detailed.map((item, index) => (
+              <article
+                className="cart-line"
+                key={item.productId}
+                style={{ "--i": index } as React.CSSProperties}
+              >
                 <div className="cart-line-main">
                   <div className="cart-line-media" aria-hidden="true">
                     {item.product.image ? (
