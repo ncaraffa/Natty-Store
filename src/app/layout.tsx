@@ -6,6 +6,7 @@ import "./accessibility.css";
 import { CartProvider } from "@/components/cart-provider";
 import { Header } from "@/components/header";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { PageTransition } from "@/components/page-transition";
 
 const baloo = Baloo_2({
   subsets: ["latin"],
@@ -58,7 +59,7 @@ export default function RootLayout({
           </a>
           <Header />
           <main id="conteudo" tabIndex={-1}>
-            {children}
+            <PageTransition>{children}</PageTransition>
           </main>
           <footer className="site-footer">
             <div className="footer-cta">

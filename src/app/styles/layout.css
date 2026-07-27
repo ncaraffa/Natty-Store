@@ -192,6 +192,10 @@
   position: relative;
 }
 
+.cart-pill-icon {
+  display: inline-flex;
+}
+
 .cart-pill-count {
   position: absolute;
   top: -7px;

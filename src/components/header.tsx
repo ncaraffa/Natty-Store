@@ -160,7 +160,9 @@ export function Header() {
         </Link>
         <Link href={isAdmin ? "/admin" : "/conta"}>{isAdmin ? "Painel admin" : "Minha conta"}</Link>
         <Link className="pill cart-pill" href="/carrinho" aria-label={`Carrinho com ${count} ${count === 1 ? "item" : "itens"}`}>
-          <CartIcon />
+          <span id="header-cart-icon" className="cart-pill-icon">
+            <CartIcon />
+          </span>
           <span className="cart-pill-label">Carrinho</span>
           {count > 0 && (
             <span className={`cart-pill-count${cartBump ? " is-bumping" : ""}`}>{count}</span>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Catalog } from "@/components/catalog";
 import { Banners } from "@/components/banners";
+import { HeroParallax } from "@/components/hero-parallax";
 
 function ArrowIcon() {
   return (
@@ -133,21 +134,23 @@ export default function Home() {
         </div>
 
         <div className="hero-visual">
-          <Sparkle style={{ top: "6%", right: "4%", animationDelay: "0.3s" }} />
-          <Sparkle style={{ bottom: "10%", left: "-2%", width: 14, height: 14, animationDelay: "1.1s" }} />
-          <div className="logo-card-wrap">
-            <div className="logo-card">
-              <Image
-                className="logo-card__img"
-                src="/logo.png"
-                alt="Natty Store"
-                width={420}
-                height={420}
-                priority
-              />
+          <HeroParallax>
+            <Sparkle style={{ top: "6%", right: "4%", animationDelay: "0.3s" }} />
+            <Sparkle style={{ bottom: "10%", left: "-2%", width: 14, height: 14, animationDelay: "1.1s" }} />
+            <div className="logo-card-wrap">
+              <div className="logo-card">
+                <Image
+                  className="logo-card__img"
+                  src="/logo.png"
+                  alt="Natty Store"
+                  width={420}
+                  height={420}
+                  priority
+                />
+              </div>
+              <span className="hero-float-tag">Novidades toda semana</span>
             </div>
-            <span className="hero-float-tag">Novidades toda semana</span>
-          </div>
+          </HeroParallax>
         </div>
       </section>
 
@@ -164,7 +167,7 @@ export default function Home() {
               key={game.href}
               href={game.href}
               className={`game-nav-card ${game.theme}${index === 0 ? " game-nav-card--lg" : ""}`}
-              data-reveal
+              data-reveal="pop"
             >
               <div className="game-nav-card__body">
                 <span className="eyebrow">{game.tag}</span>

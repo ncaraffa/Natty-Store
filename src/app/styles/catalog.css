@@ -65,6 +65,12 @@
   position: relative;
 }
 
+.hero-parallax {
+  --parallax-y: 0px;
+  transform: translateY(var(--parallax-y));
+  will-change: transform;
+}
+
 .hero-float-tag {
   position: absolute;
   bottom: 6%;

@@ -152,11 +152,15 @@ button:disabled,
    com divisória, e um filete de cor no topo (identidade de "item de
    loja", como uma carta de jogo, sem depender só de sombra/hover). */
 .card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --lift: 0px;
   position: relative;
   display: flex;
   flex-direction: column;
   padding: var(--space-4) var(--space-4) var(--space-5);
   overflow: hidden;
+  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--lift));
   transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
@@ -171,7 +175,7 @@ button:disabled,
 }
 
 .card:hover {
-  transform: translateY(-6px);
+  --lift: -6px;
   box-shadow: var(--shadow-md), 0 0 0 1px var(--purple-100);
   border-color: var(--color-border-strong);
 }
@@ -273,6 +277,20 @@ button:disabled,
   .card-action.is-added svg {
     animation: none;
   }
+}
+
+/* Bolha que "voa" do botão até o carrinho no cabeçalho (ver
+   flyToCart em src/components/product-card.tsx) — nó DOM efêmero,
+   criado e removido via WAAPI, fora da árvore do React. */
+.fly-to-cart-ghost {
+  position: fixed;
+  z-index: 999;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-surface-brand);
+  box-shadow: var(--shadow-brand-glow);
+  pointer-events: none;
 }
 
 .panel h2,
@@ -561,6 +579,11 @@ a.banner-card:hover {
   object-fit: cover;
   flex-shrink: 0;
   background: var(--color-surface-sunken);
+  transition: transform var(--transition-slow);
+}
+
+a.banner-card:hover .banner-card__image {
+  transform: scale(1.08);
 }
 
 .banner-card__body {

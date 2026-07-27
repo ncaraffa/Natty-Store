@@ -16,10 +16,43 @@
   transform: none;
 }
 
+/* Variante "pop" — para grades de cartões (produtos, navegação por
+   jogo): entra com mais presença (maior deslocamento + leve escala)
+   e usa a curva com overshoot (--ease-spring) em vez de --ease-out,
+   reforçando a sensação de peso físico ao "assentar" no lugar. */
+[data-reveal="pop"] {
+  transform: translateY(28px) scale(0.94);
+  transition: opacity 620ms var(--ease-out), transform 620ms var(--ease-spring);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal="pop"].in-view {
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* Transição de página — ver src/components/page-transition.tsx.
+   O wrapper remonta a cada troca de rota, reiniciando esta animação. */
+.page-transition {
+  animation: page-enter 480ms var(--ease-out) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
+    animation: none;
   }
 }
