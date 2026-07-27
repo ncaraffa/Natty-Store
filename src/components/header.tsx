@@ -212,12 +212,21 @@ export function Header() {
           </div>
 
           <nav aria-label="Navegação mobile">
-            {links.map(([label, href]) => (
-              <Link key={href} href={href} aria-current={isActive(href) ? "page" : undefined}>
+            {links.map(([label, href], index) => (
+              <Link
+                key={href}
+                href={href}
+                aria-current={isActive(href) ? "page" : undefined}
+                style={{ "--i": index } as React.CSSProperties}
+              >
                 {label}
               </Link>
             ))}
-            <Link href="/chat" aria-current={isActive("/chat") ? "page" : undefined}>
+            <Link
+              href="/chat"
+              aria-current={isActive("/chat") ? "page" : undefined}
+              style={{ "--i": links.length } as React.CSSProperties}
+            >
               Suporte
               {supportBadge}
             </Link>

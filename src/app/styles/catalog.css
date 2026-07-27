@@ -298,6 +298,8 @@
 }
 
 .game-nav-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -308,6 +310,7 @@
   overflow: hidden;
   color: #fff;
   box-shadow: var(--shadow-md);
+  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
@@ -322,7 +325,7 @@
 }
 
 .game-nav-card:hover {
-  transform: translateY(-5px);
+  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(-5px);
   box-shadow: var(--shadow-lg);
 }
 
@@ -418,11 +421,21 @@
   place-items: center;
   box-shadow: var(--shadow-md);
   color: var(--color-brand-primary);
+  transition: transform var(--transition-base) var(--ease-spring);
+}
+
+.custom-order-banner:hover .custom-order-banner__art {
+  transform: rotate(-4deg) scale(1.05);
 }
 
 .custom-order-banner__art svg {
   width: 45%;
   height: 45%;
+  transition: transform var(--transition-slow) var(--ease-spring);
+}
+
+.custom-order-banner:hover .custom-order-banner__art svg {
+  transform: rotate(8deg) scale(1.08);
 }
 
 /* Faixa de confiança */
@@ -465,6 +478,11 @@
   place-items: center;
   background: linear-gradient(135deg, var(--purple-100) 0%, var(--pink-soft) 100%);
   flex-shrink: 0;
+  transition: transform var(--transition-base) var(--ease-spring);
+}
+
+.trust-item:hover .trust-icon {
+  transform: rotate(-6deg) scale(1.08);
 }
 
 .trust-item h3 {

@@ -5,6 +5,7 @@ import { Catalog } from "@/components/catalog";
 import { Banners } from "@/components/banners";
 import { HeroParallax } from "@/components/hero-parallax";
 import { MagneticLink } from "@/components/magnetic-link";
+import { TiltLink } from "@/components/tilt-link";
 
 /**
  * Cada palavra fica num invólucro com overflow escondido e sobe de
@@ -197,7 +198,7 @@ export default function Home() {
         </div>
         <div className="game-nav-grid" data-reveal-group>
           {games.map((game, index) => (
-            <Link
+            <TiltLink
               key={game.href}
               href={game.href}
               className={`game-nav-card ${game.theme}${index === 0 ? " game-nav-card--lg" : ""}`}
@@ -211,7 +212,7 @@ export default function Home() {
                   Ver itens <ArrowIcon />
                 </span>
               </div>
-            </Link>
+            </TiltLink>
           ))}
         </div>
       </section>
