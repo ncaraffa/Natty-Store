@@ -7,6 +7,7 @@ import { CartProvider } from "@/components/cart-provider";
 import { Header } from "@/components/header";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { PageTransition } from "@/components/page-transition";
+import { RouteCurtain } from "@/components/route-curtain";
 
 const baloo = Baloo_2({
   subsets: ["latin"],
@@ -54,6 +55,8 @@ export default function RootLayout({
       <body>
         <CartProvider>
           <ScrollReveal />
+          <RouteCurtain />
+          <div className="grain-overlay" aria-hidden="true" />
           <a className="skip-link" href="#conteudo">
             Pular para o conteúdo
           </a>

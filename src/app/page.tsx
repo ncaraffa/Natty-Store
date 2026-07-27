@@ -1,8 +1,33 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { Catalog } from "@/components/catalog";
 import { Banners } from "@/components/banners";
 import { HeroParallax } from "@/components/hero-parallax";
+import { MagneticLink } from "@/components/magnetic-link";
+
+/**
+ * Cada palavra fica num invólucro com overflow escondido e sobe de
+ * dentro do próprio espaço (ver .reveal-word em motion.css) — efeito
+ * de entrada cinematográfico, roda uma vez no carregamento da home.
+ */
+function RevealWords({ text, startAt = 0 }: { text: string; startAt?: number }) {
+  return (
+    <>
+      {text.split(" ").map((word, index) => (
+        <span className="reveal-word" key={`${word}-${index}`}>
+          <span
+            className="reveal-word__inner"
+            style={{ "--i": startAt + index } as CSSProperties}
+          >
+            {word}
+            {index < text.split(" ").length - 1 ? " " : ""}
+          </span>
+        </span>
+      ))}
+    </>
+  );
+}
 
 function ArrowIcon() {
   return (
@@ -106,12 +131,20 @@ export default function Home() {
       <Banners />
 
       <section className="hero">
+        <div className="hero-aurora" aria-hidden="true">
+          <span className="hero-aurora__blob hero-aurora__blob--a" />
+          <span className="hero-aurora__blob hero-aurora__blob--b" />
+          <span className="hero-aurora__blob hero-aurora__blob--c" />
+        </div>
+
         <div className="hero-copy">
           <span className="eyebrow">Sua coleção começa aqui ✦</span>
-          <h1>
-            Itens especiais,
+          <h1 className="hero-title">
+            <RevealWords text="Itens especiais," />
             <br />
-            <em>do seu jeito.</em>
+            <em>
+              <RevealWords text="do seu jeito." startAt={2} />
+            </em>
           </h1>
           <p>
             Uma lojinha fofa e confiável para encontrar itens de MM2, Flee
@@ -119,9 +152,9 @@ export default function Home() {
             pagamento via Pix.
           </p>
           <div className="hero-actions">
-            <Link className="button" href="#catalogo">
+            <MagneticLink className="button" href="#catalogo">
               Ver catálogo
-            </Link>
+            </MagneticLink>
             <Link className="button ghost" href="/encomendas">
               Fazer encomenda
             </Link>
@@ -139,6 +172,7 @@ export default function Home() {
             <Sparkle style={{ bottom: "10%", left: "-2%", width: 14, height: 14, animationDelay: "1.1s" }} />
             <div className="logo-card-wrap">
               <div className="logo-card">
+                <span className="logo-card__glow" aria-hidden="true" />
                 <Image
                   className="logo-card__img"
                   src="/logo.png"

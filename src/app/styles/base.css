@@ -42,6 +42,21 @@ body.no-scroll {
   overflow: hidden;
 }
 
+/* Textura de grão sutil sobre toda a loja — camada estática (não
+   anima), então não é afetada por prefers-reduced-motion. Dá uma
+   sensação de "material" em vez de superfície de vetor perfeitamente
+   lisa, sem custo de composição por ser um único data-URI fixo. */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+}
+
 a {
   color: inherit;
   text-decoration: none;

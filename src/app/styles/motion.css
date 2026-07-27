@@ -41,18 +41,117 @@
 /* Transição de página — ver src/components/page-transition.tsx.
    O wrapper remonta a cada troca de rota, reiniciando esta animação. */
 .page-transition {
-  animation: page-enter 480ms var(--ease-out) both;
+  animation: page-enter 620ms var(--ease-out) both;
 }
 
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(16px) scale(0.99);
+    transform: translateY(24px) scale(0.985);
+    filter: blur(7px);
+  }
+  55% {
+    filter: blur(0);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .page-transition {
     animation: none;
+  }
+}
+
+/* Revelação cinematográfica do título do hero — cada palavra fica
+   mascarada (overflow hidden no invólucro) e sobe de dentro do próprio
+   espaço, com um leve desfoque que dissolve ao assentar. Roda uma vez,
+   no carregamento da home (o hero está sempre acima da dobra, então
+   não depende de scroll/IntersectionObserver). */
+.reveal-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.reveal-word__inner {
+  display: inline-block;
+  transform: translateY(112%);
+  filter: blur(9px);
+  opacity: 0;
+  animation: word-rise 900ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 65ms + 80ms);
+}
+
+@keyframes word-rise {
+  to {
+    transform: translateY(0);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-word__inner {
+    animation: none;
+    transform: none;
+    filter: none;
+    opacity: 1;
+  }
+}
+
+/* Cortina de transição de rota — ver src/components/route-curtain.tsx.
+   Uma faixa em gradiente de marca varre a tela na troca de página,
+   sobrepondo o instante da remontagem do conteúdo (page-transition
+   acima cuida do reveal do conteúdo em si). */
+.route-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(120deg, var(--deep) 0%, var(--purple) 45%, var(--color-accent-pink) 100%);
+}
+
+.route-curtain.is-sweeping {
+  animation: curtain-sweep 620ms var(--ease-drawer) both;
+}
+
+@keyframes curtain-sweep {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  48% {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+  52% {
+    transform: scaleX(1);
+    transform-origin: right center;
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: right center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-curtain.is-sweeping {
+    animation: none;
+  }
+}
+
+/* CTA magnético — ver src/components/magnetic-link.tsx. O JS escreve
+   `transform` a cada pointermove; a transição aqui é o que faz o botão
+   "perseguir" o cursor em vez de grudar nele. */
+.magnetic-link {
+  transition: transform 320ms var(--ease-spring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magnetic-link {
+    transition: none;
   }
 }
