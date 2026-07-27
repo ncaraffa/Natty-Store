@@ -15,7 +15,7 @@ export default async function Account() {
       <span className="eyebrow">Área do cliente</span>
       <h1>Minha conta</h1>
 
-      <article className="panel account-card">
+      <article className="panel account-card" data-reveal>
         {authData.user ? (
           <>
             <h2>Acesso confirmado</h2>

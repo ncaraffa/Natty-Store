@@ -31,7 +31,8 @@ export async function Banners() {
 
   return (
     <div className="banner-strip">
-      {banners.map((banner) => {
+      {banners.map((banner, index) => {
+        const style = { "--i": index } as React.CSSProperties;
         const body = (
           <>
             {banner.image_url && (
@@ -49,11 +50,11 @@ export async function Banners() {
         const className = `banner-card kind-${banner.kind}`;
 
         return banner.link_url ? (
-          <a key={banner.id} href={banner.link_url} className={className}>
+          <a key={banner.id} href={banner.link_url} className={className} style={style}>
             {body}
           </a>
         ) : (
-          <article key={banner.id} className={className}>
+          <article key={banner.id} className={className} style={style}>
             {body}
           </article>
         );

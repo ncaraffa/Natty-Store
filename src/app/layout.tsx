@@ -65,7 +65,7 @@ export default function RootLayout({
             <PageTransition>{children}</PageTransition>
           </main>
           <footer className="site-footer">
-            <div className="footer-cta">
+            <div className="footer-cta" data-reveal>
               <div>
                 <span className="eyebrow">Fale com a gente</span>
                 <h2>Dúvidas antes de comprar?</h2>
@@ -86,7 +86,7 @@ export default function RootLayout({
               </div>
             </div>
 
-            <div className="site-footer-inner">
+            <div className="site-footer-inner" data-reveal>
               <div className="footer-brand">
                 <span className="brand">
                   <span className="brand-mark" aria-hidden="true">
