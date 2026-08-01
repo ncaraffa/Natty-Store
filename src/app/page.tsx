@@ -4,6 +4,7 @@ import { Banners } from "@/components/banners";
 import { MagneticLink } from "@/components/magnetic-link";
 import { TiltLink } from "@/components/tilt-link";
 import { RevealWords } from "@/components/reveal-words";
+import { HowToBuyDemo } from "@/components/how-to-buy-demo";
 
 function ArrowIcon() {
   return (
@@ -156,6 +157,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <HowToBuyDemo />
 
       <section id="catalogo">
         <div className="section-head" data-reveal>
