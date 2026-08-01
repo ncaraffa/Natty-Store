@@ -99,19 +99,13 @@ export default function Home() {
       <Banners />
 
       <section className="hero">
-        <div className="hero-aurora" aria-hidden="true">
-          <span className="hero-aurora__blob hero-aurora__blob--a" />
-          <span className="hero-aurora__blob hero-aurora__blob--b" />
-          <span className="hero-aurora__blob hero-aurora__blob--c" />
-        </div>
-
         <div className="hero-copy">
           <span className="eyebrow">Sua coleção começa aqui ✦</span>
           <h1 className="hero-title">
-            <RevealWords text="Itens especiais," />
+            <RevealWords text="Itens" />
             <br />
             <em>
-              <RevealWords text="do seu jeito." startAt={2} />
+              <RevealWords text="especiais, do seu jeito." startAt={1} />
             </em>
           </h1>
           <p>

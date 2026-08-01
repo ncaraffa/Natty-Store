@@ -10,14 +10,16 @@ export function RevealWords({ text, startAt = 0 }: { text: string; startAt?: num
   return (
     <>
       {words.map((word, index) => (
-        <span className="reveal-word" key={`${word}-${index}`}>
-          <span
-            className="reveal-word__inner"
-            style={{ "--i": startAt + index } as CSSProperties}
-          >
-            {word}
-            {index < words.length - 1 ? " " : ""}
+        <span key={`${word}-${index}`}>
+          <span className="reveal-word">
+            <span
+              className="reveal-word__inner"
+              style={{ "--i": startAt + index } as CSSProperties}
+            >
+              {word}
+            </span>
           </span>
+          {index < words.length - 1 ? " " : ""}
         </span>
       ))}
     </>
