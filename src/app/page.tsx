@@ -1,8 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Catalog } from "@/components/catalog";
 import { Banners } from "@/components/banners";
-import { HeroParallax } from "@/components/hero-parallax";
 import { MagneticLink } from "@/components/magnetic-link";
 import { TiltLink } from "@/components/tilt-link";
 import { RevealWords } from "@/components/reveal-words";
@@ -71,14 +69,6 @@ function GiftIcon() {
   );
 }
 
-function Sparkle({ style }: { style: React.CSSProperties }) {
-  return (
-    <svg className="hero-sparkle" style={style} width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 0c1 5.5 5.5 10 11 11-5.5 1-10 5.5-11 11-1-5.5-5.5-10-11-11 5.5-1 10-5.5 11-11z" />
-    </svg>
-  );
-}
-
 const games = [
   {
     href: "/mm2",
@@ -142,27 +132,6 @@ export default function Home() {
             <li>Pagamento via Pix</li>
             <li>Suporte direto no chat</li>
           </ul>
-        </div>
-
-        <div className="hero-visual">
-          <HeroParallax>
-            <Sparkle style={{ top: "6%", right: "4%", animationDelay: "0.3s" }} />
-            <Sparkle style={{ bottom: "10%", left: "-2%", width: 14, height: 14, animationDelay: "1.1s" }} />
-            <div className="logo-card-wrap">
-              <div className="logo-card">
-                <span className="logo-card__glow" aria-hidden="true" />
-                <Image
-                  className="logo-card__img"
-                  src="/logo.png"
-                  alt="Natty Store"
-                  width={420}
-                  height={420}
-                  priority
-                />
-              </div>
-              <span className="hero-float-tag">Novidades toda semana</span>
-            </div>
-          </HeroParallax>
         </div>
       </section>
 
