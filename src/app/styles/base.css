@@ -88,11 +88,14 @@ h1 {
 
 h1 em {
   font-style: normal;
+  position: relative;
+}
+
+h1 em .reveal-word__inner {
   background: linear-gradient(120deg, var(--color-brand-primary) 0%, var(--deep) 60%, var(--color-accent-pink) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  position: relative;
 }
 
 h2 {
