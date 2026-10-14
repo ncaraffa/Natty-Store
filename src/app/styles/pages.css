@@ -269,7 +269,7 @@
 
 .rating-summary .stars {
   font-size: 1.6rem;
-  color: #e0a63c;
+  color: var(--yellow-deep);
   letter-spacing: 2px;
 }
 
@@ -318,7 +318,7 @@
 }
 
 .stars {
-  color: #e0a63c;
+  color: var(--yellow-deep);
   letter-spacing: 1px;
   white-space: nowrap;
 }

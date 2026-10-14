@@ -7,6 +7,12 @@ import { badgeLabels } from "@/types";
 import { money, publicStock } from "@/lib/catalog-display";
 import { useCart } from "./cart-provider";
 
+const categoryLabels: Record<Product["category"], string> = {
+  mm2: "MM2",
+  ftf: "Flee the Facility",
+  "adopt-me": "Adopt Me",
+};
+
 function BoxIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -21,10 +27,26 @@ function BoxIcon() {
   );
 }
 
+function PlusIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function CheckIcon() {
   return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function CrossIcon() {
+  return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
     </svg>
   );
 }
@@ -35,6 +57,8 @@ export function ProductCard({ product }: { product: Product }) {
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const purchasable =
     product.stockStatus === "available" || product.stockStatus === "limited";
+  const byRequest =
+    product.stockStatus === "preorder" || product.stockStatus === "backorder";
 
   useEffect(() => {
     return () => {
@@ -50,10 +74,7 @@ export function ProductCard({ product }: { product: Product }) {
   }
 
   return (
-    <article
-      className={`card${product.badge ? ` card-accent-${product.badge}` : ""}`}
-      data-reveal
-    >
+    <article className="card" data-reveal>
       {product.badge && (
         <span className={`badge badge-${product.badge}`}>{badgeLabels[product.badge]}</span>
       )}
@@ -68,37 +89,46 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         )}
       </div>
-      <span className="card-eyebrow">{product.category}</span>
-      <h3>{product.name}</h3>
-      <p>{product.description}</p>
-      <div className="row">
-        <strong className="price">{money(product.priceCents)}</strong>
-        <span className={`stock status-${product.stockStatus}`}>
-          {publicStock[product.stockStatus]}
-        </span>
+
+      <div className="card-body">
+        <span className="card-eyebrow">{categoryLabels[product.category]}</span>
+        <h3>{product.name}</h3>
+        <p>{product.description}</p>
       </div>
-      {product.stockStatus === "preorder" ||
-      product.stockStatus === "backorder" ? (
-        <Link className="button card-action" href="/encomendas">
-          Solicitar encomenda
-        </Link>
-      ) : (
-        <button
-          className={`card-action${justAdded ? " is-added" : ""}`}
-          disabled={!purchasable}
-          onClick={handleAdd}
-        >
-          {justAdded ? (
-            <>
-              <CheckIcon /> Adicionado
-            </>
-          ) : purchasable ? (
-            "Adicionar ao carrinho"
-          ) : (
-            "Indisponível"
-          )}
-        </button>
-      )}
+
+      <div className="card-footer">
+        <div className="card-price">
+          <strong className="price">{money(product.priceCents)}</strong>
+          <span className={`stock status-${product.stockStatus}`}>
+            {publicStock[product.stockStatus]}
+          </span>
+        </div>
+
+        {byRequest ? (
+          <Link className="button sm card-action card-order-link" href="/encomendas">
+            Encomendar
+          </Link>
+        ) : (
+          <button
+            type="button"
+            className={`card-action card-add${justAdded ? " is-added" : ""}`}
+            disabled={!purchasable}
+            onClick={handleAdd}
+            aria-label={
+              purchasable
+                ? `Adicionar ${product.name} ao carrinho`
+                : `${product.name} indisponível`
+            }
+            title={purchasable ? "Adicionar ao carrinho" : "Indisponível"}
+          >
+            {justAdded ? <CheckIcon /> : purchasable ? <PlusIcon /> : <CrossIcon />}
+          </button>
+        )}
+      </div>
+
+      <span className="sr-only" role="status" aria-live="polite">
+        {justAdded ? `${product.name} adicionado ao carrinho` : ""}
+      </span>
     </article>
   );
 }

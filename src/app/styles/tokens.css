@@ -1,92 +1,106 @@
 /*
-  Design tokens — Natty Store
-  Paleta base preservada (não alterar os hex de marca):
-  roxo #7953a6, roxo profundo #4d2d71, lilás #d7ccec, rosa #dfb9d8,
-  branco quente #fffdfd, texto #29212d, texto secundário #746c79.
+  Design tokens — Natty Store (tema "streetwear": branco + amarelo).
+  Cores principais: branco e amarelo; preto como tinta de contraste
+  (textos, botões e contornos), como em uma loja de streetwear.
+
+  Os nomes antigos (--purple, --deep, --lilac, --pink...) continuam
+  existindo e apontam para a nova paleta, para que todos os módulos
+  (loja, checkout, chat, admin) mudem de tema juntos sem duplicar CSS.
 */
 :root {
-  /* Marca — base */
-  --purple: #7953a6;
-  --deep: #4d2d71;
-  --lilac: #d7ccec;
-  --pink: #dfb9d8;
-  --paper: #fffdfd;
-  --ink: #29212d;
-  --muted: #746c79;
+  /* Paleta base */
+  --yellow: #ffd60a;
+  --yellow-deep: #f2b705;
+  --yellow-50: #fffbe6;
+  --yellow-100: #fff3b0;
+  --yellow-200: #ffe873;
+  --white: #ffffff;
+  --page: #fafaf6;
+  --ink: #121212;
+  --muted: #5b5951;
 
-  /* Marca — tons derivados */
-  --purple-50: #f6f2fb;
-  --purple-100: #efe6f8;
-  --purple-600: #6a469b;
-  --deep-700: #3c2258;
-  --lilac-soft: #efe9f8;
-  --pink-soft: #f6e6f2;
+  /* Aliases legados → nova paleta */
+  --purple: #1c1c1c;
+  --deep: #0b0b0b;
+  --lilac: var(--yellow-200);
+  --pink: var(--yellow);
+  --paper: #ffffff;
+  --purple-50: var(--yellow-50);
+  --purple-100: var(--yellow-100);
+  --purple-600: #2a2a2a;
+  --deep-700: #000000;
+  --lilac-soft: #fff8d1;
+  --pink-soft: var(--yellow-100);
 
   /* Tokens semânticos */
-  --color-brand-primary: var(--purple);
+  --color-brand-primary: var(--ink);
   --color-brand-strong: var(--deep);
-  --color-brand-soft: var(--lilac);
-  --color-accent-pink: var(--pink);
+  --color-brand-soft: var(--yellow-200);
+  --color-accent-pink: var(--yellow);
+  --color-accent: var(--yellow);
+  --color-on-accent: var(--ink);
 
-  --color-surface: var(--paper);
-  --color-surface-muted: #faf6fc;
+  --color-surface: var(--page);
+  --color-surface-muted: #f6f5f0;
   --color-surface-elevated: #ffffff;
-  --color-surface-sunken: #f4eef8;
-  --color-surface-brand: linear-gradient(135deg, var(--purple) 0%, var(--deep) 100%);
+  --color-surface-sunken: #efede5;
+  --color-surface-brand: var(--yellow);
 
   --color-text: var(--ink);
   --color-text-muted: var(--muted);
-  --color-text-soft: #948c9c;
-  --color-text-on-brand: var(--paper);
+  --color-text-soft: #858278;
+  --color-text-on-brand: #ffffff;
 
-  --color-border: #ece3f1;
-  --color-border-strong: #d9cde1;
-  --color-border-focus: #b24e9f;
+  --color-border: #e7e4d9;
+  --color-border-strong: #d4cfbf;
+  --color-border-focus: var(--ink);
+  --color-outline: var(--ink);
 
-  --color-success: #2f7a54;
-  --color-success-bg: #e7f5ed;
-  --color-success-border: #b8dfcb;
+  --color-success: #1f7a4a;
+  --color-success-bg: #e8f6ee;
+  --color-success-border: #b9e0c9;
 
-  --color-warning: #8a6206;
-  --color-warning-bg: #fff4db;
-  --color-warning-border: #f0d28a;
+  --color-warning: #7a5600;
+  --color-warning-bg: #fff6d6;
+  --color-warning-border: #f5d97a;
 
-  --color-danger: #a43d55;
-  --color-danger-bg: #fdecef;
-  --color-danger-border: #f2c6cf;
+  --color-danger: #b3261e;
+  --color-danger-bg: #fdecea;
+  --color-danger-border: #f4c2bd;
 
-  --color-info: #395c99;
-  --color-info-bg: #e9eefb;
-  --color-info-border: #c7d3f2;
+  --color-info: #1f1f1f;
+  --color-info-bg: #f6f5f0;
+  --color-info-border: #e2dfd3;
 
-  /* Selos de produto */
-  --color-badge-new-bg: #e0f0ff;
-  --color-badge-new-fg: #1f5fa6;
-  --color-badge-promo-bg: #ffe3ec;
-  --color-badge-promo-fg: #a6295d;
-  --color-badge-bestseller-bg: #fff2cf;
-  --color-badge-bestseller-fg: #8a6206;
-  --color-badge-featured-bg: #efe3ff;
-  --color-badge-featured-fg: #5a2ea6;
+  /* Selos de produto — variações de amarelo/preto/branco */
+  --color-badge-new-bg: var(--yellow);
+  --color-badge-new-fg: var(--ink);
+  --color-badge-promo-bg: var(--ink);
+  --color-badge-promo-fg: var(--yellow);
+  --color-badge-bestseller-bg: var(--yellow-100);
+  --color-badge-bestseller-fg: var(--ink);
+  --color-badge-featured-bg: #ffffff;
+  --color-badge-featured-fg: var(--ink);
 
-  /* Sombras — camadas (ambiente + contato) para sensação de profundidade real */
-  --shadow-xs: 0 1px 2px rgba(61, 34, 88, 0.06);
-  --shadow-sm: 0 2px 6px rgba(77, 45, 113, 0.05), 0 6px 16px rgba(77, 45, 113, 0.07);
-  --shadow-md: 0 4px 10px rgba(82, 52, 95, 0.06), 0 16px 36px rgba(82, 52, 95, 0.12);
-  --shadow-lg: 0 10px 20px rgba(108, 68, 115, 0.1), 0 32px 72px rgba(108, 68, 115, 0.18);
-  --shadow-focus: 0 0 0 4px rgba(178, 78, 159, 0.22);
-  --shadow-brand-glow: 0 10px 28px rgba(121, 83, 166, 0.28);
-  --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  /* Sombras — chapadas, estilo "adesivo", com pouco desfoque */
+  --shadow-xs: 0 1px 0 rgba(18, 18, 18, 0.04);
+  --shadow-sm: 0 1px 2px rgba(18, 18, 18, 0.05), 0 4px 12px rgba(18, 18, 18, 0.05);
+  --shadow-md: 0 6px 18px rgba(18, 18, 18, 0.08);
+  --shadow-lg: 0 18px 44px rgba(18, 18, 18, 0.12);
+  --shadow-focus: 0 0 0 4px rgba(255, 214, 10, 0.6);
+  --shadow-brand-glow: 0 6px 20px rgba(255, 214, 10, 0.45);
+  --shadow-inset-top: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --shadow-sticker: 4px 4px 0 var(--ink);
+  --shadow-sticker-sm: 3px 3px 0 var(--ink);
 
-  /* Raios */
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 26px;
-  --radius-xl: 36px;
+  /* Raios — menores, mais "gráficos" */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
   --radius-pill: 999px;
 
-  /* Espaçamento — escala com passos maiores para dar mais respiro
-     entre seções e blocos de conteúdo (ritmo vertical mais generoso) */
+  /* Espaçamento */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -103,9 +117,9 @@
   --space-28: 112px;
 
   /* Layout */
-  --content-max: 1200px;
+  --content-max: 1240px;
   --content-narrow: 700px;
-  --header-height: 84px;
+  --header-height: 76px;
 
   /* Movimento */
   --ease-out: cubic-bezier(0.22, 0.7, 0.32, 1);
@@ -115,24 +129,25 @@
   --transition-base: 220ms var(--ease-out);
   --transition-slow: 320ms var(--ease-out);
 
-  /* Tipografia — par "Baloo 2" (display, redondo e cheio de
-     personalidade para um bazar de itens de jogo) + "Inter" (texto,
-     neutro e nítido em telas densas de preço/estoque). */
-  --font-display: var(--font-baloo), "Segoe UI", sans-serif;
+  /* Tipografia
+     - display: "Archivo" (grotesca forte, títulos e logotipo)
+     - body: "Inter" (texto corrido, preços, tabelas)
+     - bubble: "Titan One" (letreiro "grafite inflado" do hero/banners)
+     - marker: "Permanent Marker" (rabiscos escritos à mão) */
+  --font-display: var(--font-archivo), "Arial Black", sans-serif;
   --font-body: var(--font-inter), "Segoe UI", sans-serif;
+  --font-bubble: var(--font-titan), "Arial Black", sans-serif;
+  --font-hand: var(--font-marker), "Comic Sans MS", cursive;
 
-  /* Escala tipográfica — passos maiores entre os níveis para uma
-     hierarquia com mais contraste (h1 bem grande, h3 e body mais
-     próximos entre si, mas com peso distinto). */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.125rem;
-  --text-xl: clamp(1.3rem, 1.16rem + 0.6vw, 1.5rem);
-  --text-2xl: clamp(1.6rem, 1.35rem + 1.1vw, 2rem);
-  --text-3xl: clamp(2rem, 1.6rem + 1.7vw, 2.6rem);
-  --text-4xl: clamp(2.6rem, 1.9rem + 3vw, 4rem);
-  --text-5xl: clamp(3.2rem, 2.2rem + 4.2vw, 5rem);
+  --text-xl: clamp(1.25rem, 1.12rem + 0.55vw, 1.45rem);
+  --text-2xl: clamp(1.55rem, 1.3rem + 1vw, 1.95rem);
+  --text-3xl: clamp(1.9rem, 1.5rem + 1.6vw, 2.5rem);
+  --text-4xl: clamp(2.4rem, 1.8rem + 2.8vw, 3.6rem);
+  --text-5xl: clamp(2.8rem, 2rem + 3.8vw, 4.6rem);
 }
 
 @media (prefers-reduced-motion: reduce) {

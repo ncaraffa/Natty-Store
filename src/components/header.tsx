@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "./cart-provider";
+import { BrandWordmark } from "./brand-wordmark";
 
 const links: [string, string][] = [
   ["Início", "/"],
@@ -37,6 +38,15 @@ function CartIcon() {
       />
       <circle cx="10" cy="21" r="1.4" fill="currentColor" />
       <circle cx="17" cy="21" r="1.4" fill="currentColor" />
+    </svg>
+  );
+}
+
+function UserIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+      <path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -135,10 +145,7 @@ export function Header() {
     <>
       <header className={`header${scrolled ? " is-scrolled" : ""}`}>
       <Link className="brand" href="/" aria-label="Natty Store — página inicial">
-        <span className="brand-mark" aria-hidden="true">
-          N
-        </span>
-        Natty <span>Store</span>
+        <BrandWordmark />
       </Link>
 
       <nav className="desktop-nav" aria-label="Navegação principal">
@@ -158,7 +165,10 @@ export function Header() {
           <SearchIcon />
           <span>Buscar itens…</span>
         </Link>
-        <Link href={isAdmin ? "/admin" : "/conta"}>{isAdmin ? "Painel admin" : "Minha conta"}</Link>
+        <Link className="header-account" href={isAdmin ? "/admin" : "/conta"}>
+          <UserIcon />
+          <span>{isAdmin ? "Painel admin" : "Minha conta"}</span>
+        </Link>
         <Link className="pill cart-pill" href="/carrinho" aria-label={`Carrinho com ${count} ${count === 1 ? "item" : "itens"}`}>
           <CartIcon />
           <span className="cart-pill-label">Carrinho</span>
@@ -194,10 +204,7 @@ export function Header() {
         >
           <div className="mobile-menu-head">
             <span className="brand">
-              <span className="brand-mark" aria-hidden="true">
-                N
-              </span>
-              Natty <span>Store</span>
+              <BrandWordmark compact />
             </span>
             <button
               type="button"

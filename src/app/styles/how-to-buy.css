@@ -96,7 +96,7 @@
   transform: translate(-30%, -20%);
   transition: left 550ms var(--ease-spring), top 550ms var(--ease-spring);
   color: var(--deep);
-  filter: drop-shadow(0 3px 6px rgba(77, 45, 113, 0.35));
+  filter: drop-shadow(0 3px 6px rgba(18, 18, 18, 0.35));
   pointer-events: none;
 }
 
@@ -215,7 +215,7 @@
 .tour-mock-image {
   aspect-ratio: 4 / 3;
   border-radius: var(--radius-md);
-  background: linear-gradient(150deg, #f5eefb 0%, #fdeef6 100%);
+  background: #f1f0ea;
   display: grid;
   place-items: center;
   color: var(--color-brand-primary);
@@ -242,27 +242,28 @@
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  border-radius: var(--radius-md);
+  border-radius: 10px;
   padding: 12px 18px;
-  background: linear-gradient(135deg, var(--purple) 0%, var(--deep) 100%);
-  color: var(--color-text-on-brand);
+  background: var(--ink);
+  color: #fff;
   font-family: var(--font-body);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 0.88rem;
-  box-shadow: 0 3px 0 var(--deep-700);
+  box-shadow: none;
   transition: transform 160ms var(--ease-spring), box-shadow 160ms var(--ease-out), background 200ms var(--ease-out);
 }
 
 .tour-mock-button.ghost {
   background: var(--color-surface-elevated);
   color: var(--color-brand-strong);
-  border: 2px solid var(--color-border-strong);
-  box-shadow: 0 3px 0 var(--color-border-strong);
+  border: 1.5px solid var(--ink);
+  box-shadow: none;
 }
 
 .tour-mock-button.is-added {
-  background: linear-gradient(135deg, var(--color-success) 0%, #1f5b3c 100%);
-  box-shadow: 0 3px 0 #16412b;
+  background: var(--ink);
+  color: var(--yellow);
+  box-shadow: 3px 3px 0 var(--yellow);
   transform: translateY(1px) scale(0.99);
 }
 
@@ -534,6 +535,7 @@
 
 .tour-track {
   width: 100%;
+  border: 0;
   background: none;
   box-shadow: none;
   padding: 0;

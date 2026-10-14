@@ -1,40 +1,15 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Catalog } from "@/components/catalog";
 import { Banners } from "@/components/banners";
 import { HowToBuyDemo } from "@/components/how-to-buy-demo";
+import { ProductCard } from "@/components/product-card";
+import { Blob, Burst, Scribble, Smiley, Sparkle, Squiggle } from "@/components/doodles";
+import { getCatalogProducts } from "@/lib/catalog";
+import type { Category, Product } from "@/types";
 
-function ArrowIcon() {
+function ArrowIcon({ size = 18 }: { size?: number }) {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function ShieldIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6l7-3z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-      <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function ChatBubbleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M4 5h16v11H9l-4 4V5z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
     </svg>
   );
 }
@@ -53,200 +28,237 @@ function PixIcon() {
   );
 }
 
-function GiftIcon() {
+function LinesDoodle({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="4" y="9" width="16" height="11" rx="1.5" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M4 9h16M12 9v11" stroke="currentColor" strokeWidth="1.8" />
-      <path
-        d="M12 9S8 8.5 8 6a2 2 0 0 1 4 0 2 2 0 0 1 4 0c0 2.5-4 3-4 3z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
+    <svg className={className} viewBox="0 0 60 70" fill="none" aria-hidden="true">
+      {[6, 18, 30, 42, 54].map((x) => (
+        <path key={x} d={`M${x} 64L${x + 6} 6`} stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+      ))}
     </svg>
   );
 }
 
-function Sparkle({ style }: { style: React.CSSProperties }) {
-  return (
-    <svg className="hero-sparkle" style={style} width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 0c1 5.5 5.5 10 11 11-5.5 1-10 5.5-11 11-1-5.5-5.5-10-11-11 5.5-1 10-5.5 11-11z" />
-    </svg>
-  );
-}
-
-const games = [
-  {
-    href: "/mm2",
-    theme: "theme-mm2",
-    name: "Murder Mystery 2",
-    tag: "MM2",
-    blurb: "Skins, armas e sets.",
-  },
-  {
-    href: "/ftf",
-    theme: "theme-ftf",
-    name: "Flee the Facility",
-    tag: "FTF",
-    blurb: "Sets e marretas para escapar com estilo.",
-  },
-  {
-    href: "/adopt-me",
-    theme: "theme-adopt",
-    name: "Adopt Me",
-    tag: "Adopt Me",
-    blurb: "Pets e itens fofos para o seu mundo em Adopt Me.",
-  },
+const categories: { key: Category; href: string; name: string; blurb: string }[] = [
+  { key: "mm2", href: "/mm2", name: "MM2", blurb: "Skins, armas e sets." },
+  { key: "ftf", href: "/ftf", name: "Flee the Facility", blurb: "Sets e marretas para escapar com estilo." },
+  { key: "adopt-me", href: "/adopt-me", name: "Adopt Me", blurb: "Pets e itens fofos para o seu mundo." },
 ];
 
-export default function Home() {
+const badgeRank: Record<string, number> = { bestseller: 0, featured: 1, promo: 2, new: 3 };
+
+function rankForShowcase(products: Product[]) {
+  return [...products].sort((a, b) => {
+    const rankA = a.badge ? badgeRank[a.badge] : 9;
+    const rankB = b.badge ? badgeRank[b.badge] : 9;
+    if (rankA !== rankB) return rankA - rankB;
+    return Number(Boolean(b.image)) - Number(Boolean(a.image));
+  });
+}
+
+export default async function Home() {
+  const products = await getCatalogProducts();
+  const showcase = rankForShowcase(products);
+  const withImages = showcase.filter((product) => product.image);
+  const collage = withImages.slice(0, 3);
+  const bestSellers = showcase.slice(0, 8);
+  const coverByCategory = new Map<Category, Product>();
+  for (const product of withImages) {
+    if (!coverByCategory.has(product.category)) coverByCategory.set(product.category, product);
+  }
+  const year = new Date().getFullYear();
+
   return (
     <>
       <Banners />
 
-      <section className="hero">
-        <div className="hero-copy">
-          <span className="eyebrow">Sua coleção começa aqui ✦</span>
-          <h1>
-            Itens especiais,
-            <br />
-            <em>do seu jeito.</em>
+      <section className="sw-hero" aria-labelledby="hero-title">
+        <div className="sw-hero__copy">
+          <p className="sw-hero__kicker">Itens de Roblox para uma coleção mais brilhante</p>
+          <h1 id="hero-title" className="sw-hero__title sw-bubble" aria-label="Boa jogada">
+            <span aria-hidden="true">Boa</span>
+            <span aria-hidden="true">jogada</span>
+            <Sparkle className="sw-doodle sw-sparkle sw-hero__title-star" />
+            <Sparkle className="sw-doodle sw-sparkle sw-hero__title-star sw-hero__title-star--sm" />
           </h1>
-          <p>
-            Uma lojinha fofa e confiável para encontrar itens de MM2, Flee
-            the Facility e Adopt Me — com reserva automática de estoque e
-            pagamento via Pix.
+          <p className="sw-hero__lead">
+            Itens raros, gente boa. A Natty Store é a lojinha de MM2, Flee the
+            Facility e Adopt Me para quem joga com estilo — com reserva
+            automática de estoque e pagamento via Pix.
           </p>
           <div className="hero-actions">
             <Link className="button" href="#catalogo">
-              Ver catálogo
+              Ver catálogo <ArrowIcon />
             </Link>
             <Link className="button ghost" href="/encomendas">
               Fazer encomenda
             </Link>
           </div>
-          <ul className="hero-stat-row">
-            <li>Reserva automática de estoque</li>
-            <li>Pagamento via Pix</li>
-            <li>Suporte direto no chat</li>
+          <ul className="sw-stats">
+            {products.length > 0 && (
+              <li>
+                <strong>{products.length}</strong>
+                <span>itens no catálogo</span>
+              </li>
+            )}
+            <li>
+              <strong>3</strong>
+              <span>jogos na loja</span>
+            </li>
+            <li className="sw-stats__icon">
+              <PixIcon />
+              <span>Pix com confirmação automática</span>
+            </li>
           </ul>
         </div>
 
-        <div className="hero-visual">
-          <Sparkle style={{ top: "6%", right: "4%", animationDelay: "0.3s" }} />
-          <Sparkle style={{ bottom: "10%", left: "-2%", width: 14, height: 14, animationDelay: "1.1s" }} />
-          <div className="logo-card-wrap">
-            <div className="logo-card">
-              <Image
-                className="logo-card__img"
-                src="/logo.png"
-                alt="Natty Store"
-                width={420}
-                height={420}
-                priority
-              />
-            </div>
-            <span className="hero-float-tag">Novidades toda semana</span>
+        <div className="sw-hero__visual" aria-hidden="true">
+          <Blob className="sw-hero__blob" />
+          <div className="sw-collage">
+            {collage.length > 0 ? (
+              collage.map((product, index) => (
+                <figure key={product.id} className={`sw-sticker sw-sticker--${index + 1}`}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={product.image} alt="" />
+                  <figcaption>{product.name}</figcaption>
+                </figure>
+              ))
+            ) : (
+              <div className="sw-sticker sw-sticker--logo sw-bubble">N</div>
+            )}
           </div>
+          <Burst className="sw-hero__burst">Boa vibe, item raro</Burst>
+          <span className="sw-hand sw-hand--1">Joga bonito :)</span>
+          <span className="sw-hand sw-hand--2">
+            Mesma loja,
+            <br />
+            itens novos
+          </span>
+          <Squiggle className="sw-doodle sw-hero__squiggle" />
         </div>
       </section>
 
-      <section aria-labelledby="games-heading">
-        <div className="section-head" data-reveal>
-          <div>
-            <span className="eyebrow">Escolha seu jogo</span>
-            <h2 id="games-heading">Navegue por categoria</h2>
-          </div>
+      <section className="sw-section" aria-labelledby="games-heading">
+        <div className="sw-section-head" data-reveal>
+          <h2 id="games-heading">
+            Compre por <em>jogo</em>
+            <Sparkle className="sw-section-head__doodle sw-sparkle" />
+          </h2>
+          <Link className="sw-see-all" href="/busca">
+            Ver tudo <ArrowIcon size={16} />
+          </Link>
         </div>
-        <div className="game-nav-grid" data-reveal-group>
-          {games.map((game, index) => (
-            <Link
-              key={game.href}
-              href={game.href}
-              className={`game-nav-card ${game.theme}${index === 0 ? " game-nav-card--lg" : ""}`}
-              data-reveal
-            >
-              <div className="game-nav-card__body">
-                <span className="eyebrow">{game.tag}</span>
-                <h3>{game.name}</h3>
-                <p>{game.blurb}</p>
-                <span className="game-nav-card__link">
-                  Ver itens <ArrowIcon />
+        <div className="sw-cat-grid" data-reveal-group>
+          {categories.map((category) => {
+            const cover = coverByCategory.get(category.key);
+            return (
+              <Link
+                key={category.key}
+                href={category.href}
+                className={`sw-cat sw-cat--${category.key}`}
+                data-reveal
+              >
+                <Scribble className="sw-doodle sw-cat__scribble" />
+                <Sparkle className="sw-doodle sw-sparkle sw-cat__sparkle" />
+                <span className="sw-cat__media" aria-hidden="true">
+                  {cover?.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={cover.image} alt="" loading="lazy" />
+                  ) : (
+                    <span className="sw-cat__fallback sw-bubble">★</span>
+                  )}
                 </span>
-              </div>
-            </Link>
-          ))}
+                <span className="sw-cat__bar">
+                  <span className="sw-cat__label">
+                    <strong>{category.name}</strong>
+                    <span>{category.blurb}</span>
+                  </span>
+                  <span className="sw-cat__arrow" aria-hidden="true">
+                    <ArrowIcon />
+                  </span>
+                </span>
+              </Link>
+            );
+          })}
         </div>
+      </section>
+
+      <section className="sw-section" aria-labelledby="custom-order-heading">
+        <Link className="sw-promo" href="/encomendas" data-reveal>
+          <span className="sw-promo__tag">
+            Pedido
+            <br />
+            personalizado
+            <small>{`// ${year}`}</small>
+          </span>
+          <LinesDoodle className="sw-promo__lines" />
+          <h2 id="custom-order-heading" className="sw-promo__title sw-bubble">
+            <span>Não achou?</span>
+            <span>A gente</span>
+            <span>encontra.</span>
+          </h2>
+          <span className="sw-promo__cta">
+            <span className="sw-promo__arrow" aria-hidden="true">
+              <ArrowIcon size={22} />
+            </span>
+            <span>
+              Fazer uma
+              <br />
+              encomenda
+            </span>
+          </span>
+        </Link>
       </section>
 
       <HowToBuyDemo />
 
-      <section id="catalogo">
-        <div className="section-head" data-reveal>
-          <div>
-            <span className="eyebrow">Destaques</span>
-            <h2>Explore a loja</h2>
-            <p>Produtos reais, cadastrados e ativados diretamente pela administradora.</p>
-          </div>
-        </div>
-        <Catalog />
-      </section>
-
-      <section aria-labelledby="custom-order-heading">
-        <div className="custom-order-banner" data-reveal>
-          <div>
-            <span className="eyebrow">Não achou o que queria?</span>
-            <h2 id="custom-order-heading">Peça uma encomenda personalizada</h2>
-            <p>
-              Conte o item que você procura em MM2, FTF ou Adopt Me. Sua
-              solicitação é analisada diretamente pela administradora da loja.
-            </p>
-            <div className="hero-actions">
-              <Link className="button" href="/encomendas">
-                Fazer encomenda
+      <section id="catalogo" className="sw-best" aria-labelledby="best-heading">
+        <div className="sw-best__main">
+          <div className="sw-section-head" data-reveal>
+            <div>
+              <h2 id="best-heading">
+                Em <em>destaque</em>
+                <Squiggle className="sw-section-head__squiggle" />
+              </h2>
+              <p>Produtos reais, cadastrados e ativados diretamente pela administradora.</p>
+            </div>
+            {products.length > bestSellers.length && (
+              <Link className="sw-see-all" href="/busca">
+                Ver todos os {products.length} itens <ArrowIcon size={16} />
               </Link>
-            </div>
+            )}
           </div>
-          <div className="custom-order-banner__art">
-            <GiftIcon />
-          </div>
-        </div>
-      </section>
 
-      <section aria-labelledby="trust-heading">
-        <h2 className="sr-only" id="trust-heading">
-          Por que comprar na Natty Store
-        </h2>
-        <div className="trust-strip" data-reveal-group>
-          <div className="trust-item" data-reveal>
-            <span className="trust-icon">
-              <ShieldIcon />
-            </span>
-            <div>
-              <h3>Estoque reservado com segurança</h3>
-              <p>Seus itens ficam reservados automaticamente durante o pagamento.</p>
+          {bestSellers.length ? (
+            <div className="sw-best__grid" data-reveal-group>
+              {bestSellers.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
             </div>
-          </div>
-          <div className="trust-item" data-reveal>
-            <span className="trust-icon">
-              <PixIcon />
-            </span>
-            <div>
-              <h3>Pagamento via Pix</h3>
-              <p>Processado pelo Mercado Pago, com confirmação automática.</p>
+          ) : (
+            <div className="empty">
+              <h2>Nenhum produto publicado ainda.</h2>
+              <p>O catálogo exibirá somente produtos reais cadastrados e ativados.</p>
             </div>
-          </div>
-          <div className="trust-item" data-reveal>
-            <span className="trust-icon">
-              <ChatBubbleIcon />
-            </span>
-            <div>
-              <h3>Suporte direto no chat</h3>
-              <p>Fale com a administradora sempre que precisar de ajuda.</p>
-            </div>
-          </div>
+          )}
         </div>
+
+        <aside className="sw-best__aside" aria-label="Sua conta na Natty Store">
+          <div className="sw-best__aside-inner" data-reveal>
+            <p className="sw-best__aside-title">
+              Gente boa,
+              <br />
+              jogo bom
+              <Smiley />
+            </p>
+            <p>
+              Entre na sua conta para acompanhar seus pedidos em Minhas compras
+              e falar com a loja pelo chat.
+            </p>
+            <Link className="button" href="/conta">
+              Entrar ou criar conta <ArrowIcon />
+            </Link>
+          </div>
+        </aside>
       </section>
     </>
   );
